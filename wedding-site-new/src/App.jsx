@@ -8,6 +8,7 @@ import AudioPlayer from './components/AudioPlayer';
 import Story from './components/Story';
 import ScratchReveal from './components/ScratchReveal';
 import Countdown from './components/Countdown';
+import VideoSection from './components/VideoSection';
 import Events from './components/Events';
 import Gallery from './components/Gallery';
 import Venue from './components/Venue';
@@ -125,6 +126,9 @@ export default function App() {
 
         <div className="divider" />
         <Countdown />
+
+        <div className="divider" />
+        <VideoSection />
 
         <div className="divider" />
         <Events />
