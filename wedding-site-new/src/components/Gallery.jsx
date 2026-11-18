@@ -1,7 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import Tilt from 'react-parallax-tilt';
-import { Heart, MapPin, X, ChevronLeft, ChevronRight, Camera, Sparkles } from 'lucide-react';
+import { Heart, MapPin, X, ChevronLeft, ChevronRight, Camera, Sparkles, ZoomIn } from 'lucide-react';
 import { SectionTitle } from '../utils/animations';
 import { config } from '../config';
 import { audioEngine } from '../utils/audioEngine';
@@ -37,9 +36,18 @@ export default function Gallery() {
       ? config.gallery
       : config.gallery.filter((p) => p.category === selectedCategory);
 
+  const openPhoto = (photo) => {
+    try {
+      if (audioEngine?.playChime) audioEngine.playChime();
+    } catch (_) {}
+    setActivePhoto(photo);
+  };
+
   const handleLike = (e, id) => {
     e.stopPropagation();
-    audioEngine.playSparkle();
+    try {
+      if (audioEngine?.playSparkle) audioEngine.playSparkle();
+    } catch (_) {}
     const isAlreadyLiked = likedMap[id];
     setLikedMap((prev) => ({ ...prev, [id]: !isAlreadyLiked }));
     setLikes((prev) => ({
@@ -51,20 +59,26 @@ export default function Gallery() {
   const handlePrev = useCallback((e) => {
     if (e) e.stopPropagation();
     if (!activePhoto) return;
-    audioEngine.playChime();
-    const currIdx = config.gallery.findIndex((p) => p.id === activePhoto.id);
-    const prevIdx = (currIdx - 1 + config.gallery.length) % config.gallery.length;
-    setActivePhoto(config.gallery[prevIdx]);
-  }, [activePhoto]);
+    try {
+      if (audioEngine?.playChime) audioEngine.playChime();
+    } catch (_) {}
+    const currList = filteredPhotos.length > 0 ? filteredPhotos : config.gallery;
+    const currIdx = currList.findIndex((p) => p.id === activePhoto.id);
+    const prevIdx = (currIdx - 1 + currList.length) % currList.length;
+    setActivePhoto(currList[prevIdx]);
+  }, [activePhoto, filteredPhotos]);
 
   const handleNext = useCallback((e) => {
     if (e) e.stopPropagation();
     if (!activePhoto) return;
-    audioEngine.playChime();
-    const currIdx = config.gallery.findIndex((p) => p.id === activePhoto.id);
-    const nextIdx = (currIdx + 1) % config.gallery.length;
-    setActivePhoto(config.gallery[nextIdx]);
-  }, [activePhoto]);
+    try {
+      if (audioEngine?.playChime) audioEngine.playChime();
+    } catch (_) {}
+    const currList = filteredPhotos.length > 0 ? filteredPhotos : config.gallery;
+    const currIdx = currList.findIndex((p) => p.id === activePhoto.id);
+    const nextIdx = (currIdx + 1) % currList.length;
+    setActivePhoto(currList[nextIdx]);
+  }, [activePhoto, filteredPhotos]);
 
   // Keyboard navigation for Lightbox
   useEffect(() => {
@@ -152,92 +166,107 @@ export default function Gallery() {
                   exit={{ opacity: 0, scale: 0.85 }}
                   transition={{ duration: 0.5, delay: i * 0.08 }}
                 >
-                  <Tilt
-                    tiltMaxAngleX={8}
-                    tiltMaxAngleY={8}
-                    perspective={1000}
-                    scale={1.02}
-                    transitionSpeed={1200}
-                    className="h-full"
+                  <div
+                    role="button"
+                    tabIndex={0}
+                    aria-label={`View enlarged photo: ${photo.title}`}
+                    data-testid={`gallery-card-${photo.id}`}
+                    onClick={() => openPhoto(photo)}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        openPhoto(photo);
+                      }
+                    }}
+                    className="card-peach overflow-hidden rounded-2xl group cursor-pointer border border-gold/30 hover:border-gold shadow-xl flex flex-col h-full transition-all duration-300"
                   >
-                    <div
-                      onClick={() => {
-                        audioEngine.playChime();
-                        setActivePhoto(photo);
-                      }}
-                      className="card-peach overflow-hidden rounded-2xl group cursor-pointer border border-gold/30 hover:border-gold shadow-xl flex flex-col h-full transition-all duration-300"
-                    >
-                      {/* Image container */}
-                      <div className="relative overflow-hidden bg-black/40">
-                        <img
-                          src={photo.img}
-                          alt={photo.title}
-                          loading="lazy"
-                          className="w-full h-auto block transition-transform duration-700 group-hover:scale-105"
-                        />
+                    {/* Image container */}
+                    <div className="relative overflow-hidden bg-black/40">
+                      <img
+                        src={photo.img}
+                        alt={photo.title}
+                        loading="lazy"
+                        decoding="async"
+                        className="w-full h-auto block transition-transform duration-700 group-hover:scale-105"
+                      />
 
-                        {/* Gold filigree gradient overlay */}
-                        <div className="absolute inset-0 bg-gradient-to-t from-[#0d1b3e] via-transparent to-black/20 opacity-80 group-hover:opacity-60 transition-opacity" />
+                      {/* Gold filigree gradient overlay */}
+                      <div className="absolute inset-0 bg-gradient-to-t from-[#0d1b3e] via-transparent to-black/20 opacity-80 group-hover:opacity-50 transition-opacity" />
 
-                        {/* Category badge */}
-                        <div className="absolute top-3 left-3 bg-[#0d1b3e]/85 backdrop-blur-md border border-gold/40 px-2.5 py-1 rounded-full text-[10px] uppercase font-mono tracking-wider text-gold">
-                          {photo.category}
-                        </div>
-
-                        {/* Interactive Heart / Like Button */}
-                        <button
-                          onClick={(e) => handleLike(e, photo.id)}
-                          className="absolute top-3 right-3 p-2 rounded-full backdrop-blur-md border border-white/20 transition-transform active:scale-125"
-                          style={{
-                            background: isLiked ? 'rgba(235, 77, 75, 0.85)' : 'rgba(13, 27, 62, 0.75)',
-                            color: '#ffffff',
-                          }}
-                          title="Send love"
-                        >
-                          <Heart
-                            className={`w-4 h-4 ${
-                              isLiked ? 'fill-white stroke-white' : 'stroke-white/80'
-                            }`}
-                          />
-                        </button>
-
-                        {/* Location Pill */}
-                        <div className="absolute bottom-3 left-3 flex items-center gap-1.5 text-xs text-ink/90 bg-black/50 backdrop-blur-sm px-2.5 py-1 rounded-md">
-                          <MapPin className="w-3 h-3 text-gold" />
-                          <span style={{ fontFamily: 'Montserrat, sans-serif' }} className="text-[11px]">
-                            {photo.location}
-                          </span>
+                      {/* Hover zoom icon badge */}
+                      <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
+                        <div className="p-3 rounded-full bg-black/60 border border-gold text-gold backdrop-blur-md transform scale-90 group-hover:scale-100 transition-transform">
+                          <ZoomIn className="w-6 h-6" />
                         </div>
                       </div>
 
-                      {/* Photo details */}
-                      <div className="p-4 sm:p-5 flex flex-col flex-1 justify-between">
-                        <div>
-                          <h4
-                            style={{ fontFamily: 'Cormorant Garamond, serif' }}
-                            className="text-xl sm:text-2xl font-semibold text-gold mb-1.5 group-hover:text-gold-l transition-colors"
-                          >
-                            {photo.title}
-                          </h4>
-                          <p
-                            style={{ fontFamily: 'Cormorant Garamond, serif' }}
-                            className="text-sm text-ink/80 italic leading-relaxed"
-                          >
-                            "{photo.caption}"
-                          </p>
-                        </div>
+                      {/* Category badge */}
+                      <div className="absolute top-3 left-3 bg-[#0d1b3e]/85 backdrop-blur-md border border-gold/40 px-2.5 py-1 rounded-full text-[10px] uppercase font-mono tracking-wider text-gold">
+                        {photo.category}
+                      </div>
 
-                        <div className="flex items-center justify-between mt-4 pt-3 border-t border-gold/15 text-xs text-muted">
-                          <span className="flex items-center gap-1 text-[11px] font-mono text-gold/70">
-                            <Camera className="w-3 h-3" /> Click to view
-                          </span>
-                          <span className="flex items-center gap-1 font-mono text-xs text-ink/80">
-                            <Heart className="w-3 h-3 text-terracotta fill-terracotta" /> {likes[photo.id]}
-                          </span>
-                        </div>
+                      {/* Interactive Heart / Like Button */}
+                      <button
+                        type="button"
+                        onClick={(e) => handleLike(e, photo.id)}
+                        className="absolute top-3 right-3 p-2 rounded-full backdrop-blur-md border border-white/20 transition-transform active:scale-125 z-10"
+                        style={{
+                          background: isLiked ? 'rgba(235, 77, 75, 0.85)' : 'rgba(13, 27, 62, 0.75)',
+                          color: '#ffffff',
+                        }}
+                        title="Send love"
+                        aria-label="Like photo"
+                      >
+                        <Heart
+                          className={`w-4 h-4 ${
+                            isLiked ? 'fill-white stroke-white' : 'stroke-white/80'
+                          }`}
+                        />
+                      </button>
+
+                      {/* Location Pill */}
+                      <div className="absolute bottom-3 left-3 flex items-center gap-1.5 text-xs text-ink/90 bg-black/50 backdrop-blur-sm px-2.5 py-1 rounded-md">
+                        <MapPin className="w-3 h-3 text-gold" />
+                        <span style={{ fontFamily: 'Montserrat, sans-serif' }} className="text-[11px]">
+                          {photo.location}
+                        </span>
                       </div>
                     </div>
-                  </Tilt>
+
+                    {/* Photo details */}
+                    <div className="p-4 sm:p-5 flex flex-col flex-1 justify-between">
+                      <div>
+                        <h4
+                          style={{ fontFamily: 'Cormorant Garamond, serif' }}
+                          className="text-xl sm:text-2xl font-semibold text-gold mb-1.5 group-hover:text-gold-l transition-colors"
+                        >
+                          {photo.title}
+                        </h4>
+                        <p
+                          style={{ fontFamily: 'Cormorant Garamond, serif' }}
+                          className="text-sm text-ink/80 italic leading-relaxed"
+                        >
+                          "{photo.caption}"
+                        </p>
+                      </div>
+
+                      <div className="flex items-center justify-between mt-4 pt-3 border-t border-gold/15 text-xs text-muted">
+                        <button
+                          type="button"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            openPhoto(photo);
+                          }}
+                          className="flex items-center gap-1.5 text-[11px] font-mono text-gold hover:text-white px-2.5 py-1 rounded-lg bg-gold/15 hover:bg-gold/30 border border-gold/30 transition-all active:scale-95 cursor-pointer"
+                        >
+                          <Camera className="w-3.5 h-3.5 text-gold" /> Click to view
+                        </button>
+                        <span className="flex items-center gap-1 font-mono text-xs text-ink/80">
+                          <Heart className="w-3 h-3 text-terracotta fill-terracotta" /> {likes[photo.id]}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
                 </motion.div>
               );
             })}

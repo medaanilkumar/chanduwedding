@@ -85,6 +85,7 @@ export default function Events() {
               <div
                 key={ev.name}
                 onClick={() => handleCardClick(i)}
+                data-testid={`event-card-${ev.name}`}
                 className="cursor-pointer"
                 style={{ perspective: '800px', height: 'clamp(140px, 25vw, 180px)' }}
               >
