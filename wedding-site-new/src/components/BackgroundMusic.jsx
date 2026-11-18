@@ -76,6 +76,34 @@ export default function BackgroundMusic({ opened, start }) {
     };
   }, []);
 
+  // Stop the music when the page is hidden (tab switched, app minimised, screen
+  // locked or site closed) and bring it back when the guest returns.
+  useEffect(() => {
+    let resumeOnShow = false;
+    const onHide = () => {
+      const a = audioRef.current;
+      if (a && !a.paused) {
+        resumeOnShow = true;
+        a.pause();
+      }
+      window.speechSynthesis?.cancel();
+    };
+    const onVisibility = () => {
+      if (document.hidden) {
+        onHide();
+      } else if (resumeOnShow) {
+        resumeOnShow = false;
+        audioRef.current?.play().catch(() => {});
+      }
+    };
+    document.addEventListener('visibilitychange', onVisibility);
+    window.addEventListener('pagehide', onHide);
+    return () => {
+      document.removeEventListener('visibilitychange', onVisibility);
+      window.removeEventListener('pagehide', onHide);
+    };
+  }, []);
+
   const toggle = () => {
     const a = audioRef.current;
     if (!a) return;

@@ -349,3 +349,13 @@ class AudioEngine {
 }
 
 export const audioEngine = new AudioEngine();
+
+// Silence the synthesized music while the page is hidden; resume on return.
+if (typeof document !== 'undefined') {
+  document.addEventListener('visibilitychange', () => {
+    const ctx = audioEngine.ctx;
+    if (!ctx) return;
+    if (document.hidden) ctx.suspend();
+    else if (audioEngine.isPlaying) ctx.resume();
+  });
+}
