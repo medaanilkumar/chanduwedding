@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence, useAnimationFrame } from 'framer-motion';
 import { config } from '../config';
+import { preloadWeddingImages } from '../utils/imagePreloader';
 
 /* ── Animated SVG border that draws itself in on mount ── */
 function AnimatedBorder() {
@@ -157,6 +158,17 @@ export default function Cover({ onOpen }) {
   const [phase, setPhase] = useState('idle'); // idle | opening | open
   const [mouse, setMouse] = useState({ x: 0.5, y: 0.5 });
   const [sparkles, setSparkles] = useState([]);
+  const [loadPercent, setLoadPercent] = useState(0);
+  const [imagesReady, setImagesReady] = useState(false);
+
+  // Preload all wedding images immediately on landing
+  useEffect(() => {
+    preloadWeddingImages((pct) => {
+      setLoadPercent(pct);
+    }).then(() => {
+      setImagesReady(true);
+    });
+  }, []);
 
   useEffect(() => {
     const fn = e => setMouse({ x: e.clientX / window.innerWidth, y: e.clientY / window.innerHeight });
@@ -431,19 +443,19 @@ export default function Cover({ onOpen }) {
                       transition={{ duration: 1.2, ease: 'easeOut' }}
                     />
 
-                    {/* Tap to Open pill */}
+                    {/* Tap to Open pill with Preload Progress */}
                     <motion.div
-                      animate={{ opacity: [0.75, 1, 0.75], y: [0, -4, 0] }}
+                      animate={{ opacity: [0.85, 1, 0.85], y: [0, -4, 0] }}
                       transition={{ duration: 2.2, repeat: Infinity, ease: 'easeInOut' }}
                       style={{ marginTop: 24 }}
                     >
                       <div style={{
-                        fontFamily: 'Montserrat, sans-serif', fontSize: 'clamp(9px,2.5vw,11px)', letterSpacing: '0.38em',
+                        fontFamily: 'Montserrat, sans-serif', fontSize: 'clamp(9px,2.5vw,11px)', letterSpacing: '0.35em',
                         textTransform: 'uppercase', color: '#e8d8b0',
                         background: 'linear-gradient(135deg, rgba(13,27,62,0.95), rgba(17,24,72,0.9))',
-                        border: '1px solid rgba(245,200,66,0.5)',
+                        border: '1px solid rgba(245,200,66,0.55)',
                         borderRadius: 999, padding: '10px 28px', whiteSpace: 'nowrap',
-                        boxShadow: '0 3px 24px rgba(245,200,66,0.2), inset 0 1px 0 rgba(245,200,66,0.1)',
+                        boxShadow: '0 3px 24px rgba(245,200,66,0.25), inset 0 1px 0 rgba(245,200,66,0.15)',
                         display: 'flex', alignItems: 'center', gap: 10,
                       }}>
                         <motion.span
@@ -451,7 +463,11 @@ export default function Cover({ onOpen }) {
                           transition={{ duration: 4, repeat: Infinity, ease: 'linear' }}
                           style={{ color: 'rgba(245,200,66,0.9)', fontSize: 10, display: 'inline-block' }}
                         >✦</motion.span>
-                        Tap to Open
+                        {imagesReady || loadPercent >= 100 ? (
+                          <span>Tap to Open</span>
+                        ) : (
+                          <span>Loading Memories {loadPercent}%</span>
+                        )}
                         <motion.span
                           animate={{ rotate: [360, 180, 0] }}
                           transition={{ duration: 4, repeat: Infinity, ease: 'linear' }}

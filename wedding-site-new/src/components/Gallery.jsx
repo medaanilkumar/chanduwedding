@@ -181,7 +181,7 @@ export default function Gallery() {
                     className="card-peach overflow-hidden rounded-2xl group cursor-pointer border border-gold/30 hover:border-gold shadow-xl flex flex-col h-full transition-all duration-300"
                   >
                     {/* Image container */}
-                    <div className="relative overflow-hidden bg-black/40">
+                    <div className="relative overflow-hidden bg-transparent">
                       <img
                         src={photo.img}
                         alt={photo.title}
@@ -190,18 +190,8 @@ export default function Gallery() {
                         className="w-full h-auto block transition-transform duration-700 group-hover:scale-105"
                       />
 
-                      {/* Gold filigree gradient overlay */}
-                      <div className="absolute inset-0 bg-gradient-to-t from-[#0d1b3e] via-transparent to-black/20 opacity-80 group-hover:opacity-50 transition-opacity" />
-
-                      {/* Hover zoom icon badge */}
-                      <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
-                        <div className="p-3 rounded-full bg-black/60 border border-gold text-gold backdrop-blur-md transform scale-90 group-hover:scale-100 transition-transform">
-                          <ZoomIn className="w-6 h-6" />
-                        </div>
-                      </div>
-
                       {/* Category badge */}
-                      <div className="absolute top-3 left-3 bg-[#0d1b3e]/85 backdrop-blur-md border border-gold/40 px-2.5 py-1 rounded-full text-[10px] uppercase font-mono tracking-wider text-gold">
+                      <div className="absolute top-3 left-3 bg-[#0d1b3e]/90 backdrop-blur-md border border-gold/40 px-2.5 py-1 rounded-full text-[10px] uppercase font-mono tracking-wider text-gold shadow-md">
                         {photo.category}
                       </div>
 
@@ -209,9 +199,9 @@ export default function Gallery() {
                       <button
                         type="button"
                         onClick={(e) => handleLike(e, photo.id)}
-                        className="absolute top-3 right-3 p-2 rounded-full backdrop-blur-md border border-white/20 transition-transform active:scale-125 z-10"
+                        className="absolute top-3 right-3 p-2 rounded-full backdrop-blur-md border border-white/20 transition-transform active:scale-125 z-10 shadow-md"
                         style={{
-                          background: isLiked ? 'rgba(235, 77, 75, 0.85)' : 'rgba(13, 27, 62, 0.75)',
+                          background: isLiked ? 'rgba(235, 77, 75, 0.9)' : 'rgba(13, 27, 62, 0.85)',
                           color: '#ffffff',
                         }}
                         title="Send love"
@@ -225,7 +215,7 @@ export default function Gallery() {
                       </button>
 
                       {/* Location Pill */}
-                      <div className="absolute bottom-3 left-3 flex items-center gap-1.5 text-xs text-ink/90 bg-black/50 backdrop-blur-sm px-2.5 py-1 rounded-md">
+                      <div className="absolute bottom-3 left-3 flex items-center gap-1.5 text-xs text-ink/90 bg-[#0d1b3e]/90 backdrop-blur-sm px-2.5 py-1 rounded-md border border-gold/20 shadow-md">
                         <MapPin className="w-3 h-3 text-gold" />
                         <span style={{ fontFamily: 'Montserrat, sans-serif' }} className="text-[11px]">
                           {photo.location}
@@ -251,18 +241,11 @@ export default function Gallery() {
                       </div>
 
                       <div className="flex items-center justify-between mt-4 pt-3 border-t border-gold/15 text-xs text-muted">
-                        <button
-                          type="button"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            openPhoto(photo);
-                          }}
-                          className="flex items-center gap-1.5 text-[11px] font-mono text-gold hover:text-white px-2.5 py-1 rounded-lg bg-gold/15 hover:bg-gold/30 border border-gold/30 transition-all active:scale-95 cursor-pointer"
-                        >
-                          <Camera className="w-3.5 h-3.5 text-gold" /> Click to view
-                        </button>
-                        <span className="flex items-center gap-1 font-mono text-xs text-ink/80">
-                          <Heart className="w-3 h-3 text-terracotta fill-terracotta" /> {likes[photo.id]}
+                        <span className="flex items-center gap-1 text-[11px] font-mono text-gold/80">
+                          <Sparkles className="w-3 h-3 text-gold" /> {photo.category}
+                        </span>
+                        <span className="flex items-center gap-1.5 font-mono text-xs text-gold-l font-medium">
+                          <Heart className="w-3.5 h-3.5 text-terracotta fill-terracotta" /> {likes[photo.id]} blessings
                         </span>
                       </div>
                     </div>
@@ -282,35 +265,40 @@ export default function Gallery() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={() => setActivePhoto(null)}
-            className="fixed inset-0 z-[1000] flex items-center justify-center p-3 sm:p-8 backdrop-blur-2xl bg-black/90"
-            style={{ touchAction: 'pan-y' }}
+            className="fixed inset-0 z-[1000] flex items-center justify-center p-3 sm:p-6"
+            style={{
+              background: 'radial-gradient(circle at 50% 50%, rgba(13, 27, 62, 0.92) 0%, rgba(6, 12, 30, 0.96) 100%)',
+              backdropFilter: 'blur(20px)',
+              WebkitBackdropFilter: 'blur(20px)',
+              touchAction: 'pan-y',
+            }}
           >
             {/* Top Bar with Photo Counter and Close */}
             <div className="absolute top-4 sm:top-6 left-4 sm:left-6 right-4 sm:right-6 flex items-center justify-between z-50 pointer-events-none">
-              <span className="pointer-events-auto px-3.5 py-1 rounded-full bg-black/60 border border-gold/40 text-[11px] font-mono text-gold backdrop-blur-md">
+              <span className="pointer-events-auto px-3.5 py-1.5 rounded-full bg-[#0d1b3e]/90 border border-gold/50 text-[11px] font-mono text-gold backdrop-blur-md shadow-lg">
                 Photo {config.gallery.findIndex((p) => p.id === activePhoto.id) + 1} of {config.gallery.length}
               </span>
               <button
                 onClick={() => setActivePhoto(null)}
                 aria-label="Close enlarged photo"
-                className="pointer-events-auto p-2.5 rounded-full card-peach text-gold hover:text-white border border-gold/40 transition-colors shadow-lg active:scale-95"
+                className="pointer-events-auto p-2.5 rounded-full bg-[#0d1b3e]/90 text-gold hover:text-white hover:bg-gold/20 border border-gold/50 transition-all shadow-xl active:scale-95 cursor-pointer"
               >
                 <X className="w-5 h-5 sm:w-6 sm:h-6" />
               </button>
             </div>
 
-            {/* Navigation Arrows (Desktop & Tablet) */}
+            {/* Navigation Arrows */}
             <button
               onClick={handlePrev}
               aria-label="Previous photo"
-              className="absolute left-3 sm:left-6 top-1/2 -translate-y-1/2 p-3 sm:p-3.5 rounded-full card-peach text-gold hover:text-white border border-gold/40 z-50 transition-all hover:scale-110 active:scale-95 shadow-xl flex items-center justify-center"
+              className="absolute left-3 sm:left-6 top-1/2 -translate-y-1/2 p-3 sm:p-3.5 rounded-full bg-[#0d1b3e]/90 text-gold hover:text-white hover:bg-gold/20 border border-gold/50 z-50 transition-all hover:scale-110 active:scale-95 shadow-2xl flex items-center justify-center cursor-pointer"
             >
               <ChevronLeft className="w-5 h-5 sm:w-6 sm:h-6" />
             </button>
             <button
               onClick={handleNext}
               aria-label="Next photo"
-              className="absolute right-3 sm:right-6 top-1/2 -translate-y-1/2 p-3 sm:p-3.5 rounded-full card-peach text-gold hover:text-white border border-gold/40 z-50 transition-all hover:scale-110 active:scale-95 shadow-xl flex items-center justify-center"
+              className="absolute right-3 sm:right-6 top-1/2 -translate-y-1/2 p-3 sm:p-3.5 rounded-full bg-[#0d1b3e]/90 text-gold hover:text-white hover:bg-gold/20 border border-gold/50 z-50 transition-all hover:scale-110 active:scale-95 shadow-2xl flex items-center justify-center cursor-pointer"
             >
               <ChevronRight className="w-5 h-6 sm:w-6 sm:h-6" />
             </button>
@@ -322,20 +310,20 @@ export default function Gallery() {
               exit={{ scale: 0.92, y: 15 }}
               transition={{ type: 'spring', damping: 25, stiffness: 300 }}
               onClick={(e) => e.stopPropagation()}
-              className="card-peach max-w-4xl w-full rounded-2xl sm:rounded-3xl overflow-hidden border border-gold/50 shadow-2xl relative my-auto max-h-[92vh] flex flex-col"
-              style={{ background: 'rgba(10, 20, 48, 0.98)' }}
+              className="max-w-4xl w-full rounded-2xl sm:rounded-3xl overflow-hidden border border-gold/60 shadow-[0_20px_70px_rgba(0,0,0,0.8)] relative my-auto max-h-[92vh] flex flex-col"
+              style={{ background: 'linear-gradient(180deg, #101d42 0%, #0a142e 100%)' }}
             >
               {/* Photo Display */}
-              <div className="relative w-full overflow-hidden bg-black flex items-center justify-center min-h-[220px] max-h-[60vh] sm:max-h-[68vh]">
+              <div className="relative w-full overflow-hidden flex items-center justify-center min-h-[240px] max-h-[62vh] sm:max-h-[70vh] p-2 sm:p-4 bg-gradient-to-b from-[#081024] to-[#0e1a38]">
                 <img
                   src={activePhoto.img}
                   alt={activePhoto.title}
-                  className="w-auto h-auto max-h-[60vh] sm:max-h-[68vh] max-w-full object-contain select-none"
+                  className="w-auto h-auto max-h-[58vh] sm:max-h-[66vh] max-w-full object-contain rounded-xl select-none shadow-2xl"
                 />
               </div>
 
               {/* Photo Caption & Info */}
-              <div className="p-4 sm:p-6 sm:px-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-4 border-t border-gold/20 bg-gradient-to-b from-[#0d1b3e] to-[#0a152e]">
+              <div className="p-4 sm:p-6 sm:px-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-4 border-t border-gold/30 bg-[#0c1836]">
                 <div className="flex-1">
                   <div className="flex items-center gap-2 mb-1">
                     <span className="text-[10px] uppercase font-mono tracking-widest text-gold bg-gold/15 px-2.5 py-0.5 rounded-full border border-gold/30">
@@ -362,7 +350,7 @@ export default function Gallery() {
                 <div className="flex items-center gap-3 w-full sm:w-auto justify-between sm:justify-end pt-1 sm:pt-0">
                   <button
                     onClick={(e) => handleLike(e, activePhoto.id)}
-                    className="btn-gold py-2.5 px-5 text-xs flex items-center gap-2 flex-shrink-0"
+                    className="btn-gold py-2.5 px-5 text-xs flex items-center gap-2 flex-shrink-0 cursor-pointer"
                   >
                     <Heart
                       className={`w-4 h-4 ${

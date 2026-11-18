@@ -27,18 +27,7 @@ describe('Gallery Component & Image Modal Enlargement', () => {
     // Modal should show photo count and close button
     expect(screen.getByLabelText('Close enlarged photo')).toBeDefined();
     expect(screen.getByText(`Photo 1 of ${config.gallery.length}`)).toBeDefined();
-  });
-
-  it('opens enlarged modal when clicking on Click to view button', () => {
-    render(<Gallery />);
-    const clickToViewButtons = screen.getAllByText(/Click to view/i);
-    expect(clickToViewButtons.length).toBeGreaterThan(0);
-
-    // Click the first "Click to view" button
-    fireEvent.click(clickToViewButtons[0]);
-
-    // Modal should be open
-    expect(screen.getByLabelText('Close enlarged photo')).toBeDefined();
+    expect(screen.getAllByAltText(firstPhoto.title).length).toBeGreaterThan(0);
   });
 
   it('allows navigating to next and previous photos in enlarged modal', () => {
