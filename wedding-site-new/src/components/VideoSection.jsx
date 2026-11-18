@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion';
 import { SectionTitle } from '../utils/animations';
 import weddingVideo from '../images/wedding-video.mp4';
+import posterImg from '../images/RAJ04825.JPG.jpeg';
 
 export default function VideoSection() {
   return (
@@ -23,6 +24,7 @@ export default function VideoSection() {
         >
           <video
             src={weddingVideo}
+            poster={posterImg}
             controls
             playsInline
             preload="metadata"
