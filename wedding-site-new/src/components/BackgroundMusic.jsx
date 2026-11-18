@@ -26,6 +26,29 @@ export default function BackgroundMusic({ opened }) {
   const playerRef = useRef(null);
   const [ready, setReady] = useState(false);
   const [playing, setPlaying] = useState(false);
+  const resumeAfterVideo = useRef(false);
+
+  // Pause the music while the wedding video plays; resume it afterwards.
+  useEffect(() => {
+    const onVideoPlay = () => {
+      const p = playerRef.current;
+      if (p && p.getPlayerState && p.getPlayerState() === 1) {
+        resumeAfterVideo.current = true;
+        p.pauseVideo();
+      }
+    };
+    const onVideoStop = () => {
+      const p = playerRef.current;
+      if (resumeAfterVideo.current && p && p.playVideo) p.playVideo();
+      resumeAfterVideo.current = false;
+    };
+    window.addEventListener('wedding:video-play', onVideoPlay);
+    window.addEventListener('wedding:video-stop', onVideoStop);
+    return () => {
+      window.removeEventListener('wedding:video-play', onVideoPlay);
+      window.removeEventListener('wedding:video-stop', onVideoStop);
+    };
+  }, []);
 
   // Create the hidden YouTube player once the invitation is opened (user gesture).
   useEffect(() => {
@@ -66,6 +89,7 @@ export default function BackgroundMusic({ opened }) {
   const toggle = () => {
     const p = playerRef.current;
     if (!p || !ready) return;
+    resumeAfterVideo.current = false;
     if (playing) p.pauseVideo();
     else p.playVideo();
   };

@@ -3,6 +3,8 @@ import { SectionTitle } from '../utils/animations';
 import weddingVideo from '../images/wedding-video.mp4';
 import posterImg from '../images/RAJ04825.JPG.jpeg';
 
+const notify = (name) => window.dispatchEvent(new Event(name));
+
 export default function VideoSection() {
   return (
     <section
@@ -25,6 +27,9 @@ export default function VideoSection() {
           <video
             src={weddingVideo}
             poster={posterImg}
+            onPlay={() => notify('wedding:video-play')}
+            onPause={() => notify('wedding:video-stop')}
+            onEnded={() => notify('wedding:video-stop')}
             controls
             playsInline
             preload="metadata"
