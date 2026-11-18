@@ -1,0 +1,187 @@
+/* =========================================================
+   ROYAL PORTRAIT (3D Polaroid, Washi Tape, Heart Pop)
+   ========================================================= */
+
+.royal-photo-stage {
+  position: relative;
+  width: min(340px, 88vw);
+  margin: 20px auto;
+  perspective: 1000px;
+}
+
+/* Background Golden Halo & Sunburst */
+.royal-halo-ring {
+  position: absolute;
+  inset: -25px;
+  border-radius: 50%;
+  z-index: 0;
+  background: conic-gradient(
+    from 0deg,
+    rgba(245, 200, 66, 0.45),
+    rgba(255, 140, 100, 0.35),
+    rgba(255, 215, 0, 0.5),
+    rgba(245, 200, 66, 0.45)
+  );
+  filter: blur(28px);
+  opacity: 0.65;
+  animation: spinSlow 18s linear infinite;
+  pointer-events: none;
+}
+
+.royal-sunburst {
+  position: absolute;
+  left: 50%;
+  top: 45%;
+  width: 480px;
+  height: 480px;
+  margin: -240px 0 0 -240px;
+  border-radius: 50%;
+  z-index: 0;
+  background: repeating-conic-gradient(
+    rgba(245, 200, 66, 0.15) 0deg 8deg,
+    transparent 8deg 20deg
+  );
+  -webkit-mask: radial-gradient(circle, #000 20%, transparent 68%);
+  mask: radial-gradient(circle, #000 20%, transparent 68%);
+  animation: spinSlow 32s linear infinite;
+  pointer-events: none;
+}
+
+@keyframes spinSlow {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Polaroid Card Container */
+.royal-polaroid {
+  position: relative;
+  z-index: 2;
+  background: linear-gradient(180deg, #fffbf2 0%, #fff7e6 100%);
+  padding: 14px 14px 18px;
+  border-radius: 14px;
+  box-shadow:
+    0 25px 50px -12px rgba(0, 0, 0, 0.6),
+    0 0 0 1px rgba(212, 139, 17, 0.35),
+    0 0 20px rgba(245, 200, 66, 0.25);
+  transform-style: preserve-3d;
+  transition: transform 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
+  will-change: transform;
+}
+
+/* Washi Tapes */
+.washi-tape {
+  position: absolute;
+  top: -12px;
+  width: 90px;
+  height: 28px;
+  z-index: 5;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  opacity: 0.9;
+}
+
+.washi-left {
+  left: -18px;
+  transform: rotate(-28deg);
+  background: repeating-linear-gradient(
+    45deg,
+    rgba(245, 200, 66, 0.85) 0 8px,
+    rgba(255, 235, 160, 0.85) 8px 16px
+  );
+}
+
+.washi-right {
+  right: -18px;
+  transform: rotate(28deg);
+  background: repeating-linear-gradient(
+    45deg,
+    rgba(225, 112, 85, 0.85) 0 8px,
+    rgba(255, 200, 180, 0.85) 8px 16px
+  );
+}
+
+/* Photo Frame & Vignette */
+.royal-frame {
+  position: relative;
+  border: 1px solid rgba(212, 139, 17, 0.3);
+  background: #111830;
+}
+
+.photo-vignette {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(
+    ellipse 75% 75% at 50% 45%,
+    transparent 50%,
+    rgba(20, 10, 5, 0.2) 80%,
+    rgba(20, 10, 5, 0.45) 100%
+  );
+}
+
+/* Light sheen sweeping across */
+.photo-sheen {
+  position: absolute;
+  top: -20%;
+  left: -90%;
+  width: 50%;
+  height: 140%;
+  z-index: 3;
+  pointer-events: none;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.45),
+    transparent
+  );
+  transform: rotate(22deg);
+  animation: photoSheen 5s 2s ease-in-out infinite;
+}
+
+@keyframes photoSheen {
+  0%, 70% { left: -90%; }
+  100% { left: 140%; }
+}
+
+/* Floating Badges around Card */
+.float-badge {
+  position: absolute;
+  font-size: 22px;
+  z-index: 6;
+  pointer-events: none;
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
+  animation: badgeFloat 3.5s ease-in-out infinite alternate;
+}
+
+.float-top-left { top: -14px; left: 12px; animation-delay: 0s; }
+.float-top-right { top: -14px; right: 12px; animation-delay: 0.6s; }
+.float-bottom-left { bottom: 12px; left: -14px; animation-delay: 1.2s; }
+.float-bottom-right { bottom: 12px; right: -14px; animation-delay: 1.8s; }
+
+@keyframes badgeFloat {
+  0% { transform: translateY(0) rotate(-6deg); }
+  100% { transform: translateY(-8px) rotate(6deg); }
+}
+
+/* Spawning Tap Floating Emojis / Hearts */
+.royal-love-pop {
+  position: fixed;
+  z-index: 9999;
+  pointer-events: none;
+  user-select: none;
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.35));
+  animation: loveFly 1.6s ease-out forwards;
+}
+
+@keyframes loveFly {
+  0% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(0.3);
+  }
+  25% {
+    transform: translate(calc(-50% + var(--tx) * 0.4), calc(-50% + var(--ty) * 0.4)) scale(1.25);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(calc(-50% + var(--tx)), calc(-50% + var(--ty))) scale(0.8) rotate(var(--rot));
+  }
+}

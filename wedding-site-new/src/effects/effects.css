@@ -1,0 +1,34 @@
+/* Smooth scroll (Lenis) replaces the native smooth scrolling */
+html.lenis, html.lenis body { height: auto; }
+.lenis.lenis-smooth { scroll-behavior: auto !important; }
+
+/* Floating canvas and orbs */
+.fx-dust { position: fixed; inset: 0; z-index: 3; pointer-events: none; }
+.fx-orbs { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
+.fx-orbs i { position: absolute; border-radius: 50%; filter: blur(70px); opacity: .45; animation: orbDrift 22s ease-in-out infinite alternate; }
+.fx-orbs i:nth-child(1) { width: 46vmax; height: 46vmax; left: -12vmax; top: -10vmax; background: radial-gradient(circle, rgba(30,50,140,0.9), transparent 65%); }
+.fx-orbs i:nth-child(2) { width: 40vmax; height: 40vmax; right: -14vmax; top: 35vh; background: radial-gradient(circle, rgba(70,20,100,0.85), transparent 65%); animation-delay: -8s; }
+.fx-orbs i:nth-child(3) { width: 36vmax; height: 36vmax; left: 20vw; bottom: -16vmax; background: radial-gradient(circle, rgba(15,35,100,0.8), transparent 65%); animation-delay: -15s; }
+@keyframes orbDrift { to { transform: translate(8vw, 10vh) scale(1.15); } }
+
+/* Scroll reveal: sections rise out of a soft blur */
+.fx-reveal { opacity: 0; transform: translateY(56px) scale(.985); filter: blur(8px);
+  transition: opacity 1.1s cubic-bezier(.2,.8,.2,1), transform 1.1s cubic-bezier(.2,.8,.2,1), filter 1.1s; }
+.fx-reveal.fx-in { opacity: 1; transform: none; filter: none; }
+
+/* Cards: 3D tilt with a light glare that follows the pointer */
+.card-peach { position: relative; will-change: transform;
+  transform: perspective(900px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)) translateY(var(--ty, 0px));
+  transition: transform .18s ease-out, box-shadow .3s ease; }
+.card-peach:hover { --ty: -6px; }
+.card-peach::after { content: ''; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; opacity: 0; transition: opacity .3s;
+  background: radial-gradient(circle at var(--mx, 50%) var(--my, 50%), rgba(245,220,100,.18), transparent 55%); }
+.card-peach:hover::after { opacity: 1; }
+
+/* Magnetic buttons move via the separate `translate` property */
+.btn-gold, .btn-outline { transition: all .4s ease, translate .25s ease-out; }
+
+@media (prefers-reduced-motion: reduce) {
+  .fx-orbs i { animation: none; }
+  .fx-reveal { opacity: 1; transform: none; filter: none; }
+}

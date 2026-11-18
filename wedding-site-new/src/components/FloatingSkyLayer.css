@@ -1,0 +1,136 @@
+/* =========================================================
+   ROYAL WEDDING CELEBRATION LAYER (Petals, Bokeh, Stardust)
+   ========================================================= */
+
+.floating-wedding-layer {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 4;
+  overflow: hidden;
+  user-select: none;
+}
+
+/* ── 1. Twinkling Celestial Auspicious Gold Stars ── */
+.wedding-star {
+  position: absolute;
+  pointer-events: none;
+  background: radial-gradient(circle, #ffffff 15%, #fce79f 45%, rgba(245, 200, 66, 0) 75%);
+  clip-path: polygon(
+    50% 0%, 62% 38%, 100% 50%, 62% 62%,
+    50% 100%, 38% 62%, 0% 50%, 38% 38%
+  );
+  filter: drop-shadow(0 0 6px rgba(245, 200, 66, 0.85));
+  animation: starTwinkle ease-in-out infinite;
+}
+
+@keyframes starTwinkle {
+  0%, 100% {
+    opacity: 0.15;
+    transform: scale(0.6) rotate(0deg);
+  }
+  50% {
+    opacity: 0.95;
+    transform: scale(1.2) rotate(45deg);
+    filter: drop-shadow(0 0 10px rgba(255, 225, 120, 1));
+  }
+}
+
+/* ── 2. Soft Glowing Golden Bokeh Shimmer ── */
+.wedding-bokeh {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  background: radial-gradient(
+    circle,
+    rgba(245, 200, 66, 0.28) 0%,
+    rgba(255, 220, 120, 0.12) 45%,
+    transparent 70%
+  );
+  filter: blur(4px);
+  animation: bokehFloat ease-in-out infinite alternate;
+}
+
+@keyframes bokehFloat {
+  0% {
+    opacity: 0.25;
+    transform: translateY(0px) scale(0.85);
+  }
+  50% {
+    opacity: 0.75;
+  }
+  100% {
+    opacity: 0.35;
+    transform: translateY(-40px) scale(1.2);
+  }
+}
+
+/* ── 3. Luxurious Multi-Floral Wedding Petal Shower ── */
+.wedding-petal {
+  position: absolute;
+  top: -60px;
+  border-radius: 60% 40% 70% 30% / 50% 60% 40% 50%;
+  pointer-events: none;
+  opacity: 0.88;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.22);
+  animation: petalDrift linear infinite;
+  transform-origin: center center;
+}
+
+/* Royal Crimson Rose Petal */
+.wedding-petal.rose-crimson {
+  background: radial-gradient(circle at 35% 30%, #e84118 0%, #a01a14 55%, #580d09 100%);
+  border: 0.5px solid rgba(255, 120, 100, 0.3);
+}
+
+/* Delicate Blush Pink Rose Petal */
+.wedding-petal.rose-blush {
+  background: radial-gradient(circle at 35% 30%, #ffc0cb 0%, #ff758c 50%, #c0392b 100%);
+}
+
+/* Auspicious Saffron Marigold (Genda) Petal */
+.wedding-petal.marigold-saffron {
+  background: radial-gradient(circle at 40% 30%, #ffeaa7 0%, #f39c12 50%, #d35400 100%);
+  border-radius: 45% 55% 65% 35% / 50% 50% 50% 50%;
+}
+
+/* Fragrant White Mogra / Jasmine Floret */
+.wedding-petal.mogra-jasmine {
+  background: radial-gradient(circle at 40% 30%, #ffffff 0%, #fffbf0 60%, #fae8a4 100%);
+  border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+  border: 0.5px solid rgba(255, 235, 160, 0.4);
+}
+
+/* Regal Gold Leaf Foil Shimmer */
+.wedding-petal.gold-foil {
+  background: linear-gradient(135deg, #fff275 0%, #f5c842 50%, #b8860b 100%);
+  box-shadow: 0 0 10px rgba(245, 200, 66, 0.6);
+  border-radius: 50% 30% 60% 40% / 40% 60% 40% 60%;
+}
+
+@keyframes petalDrift {
+  0% {
+    transform: translateY(0) translateX(0) rotateX(0deg) rotateY(0deg) rotateZ(0deg);
+    opacity: 0;
+  }
+  8% {
+    opacity: 0.9;
+  }
+  50% {
+    transform: translateY(50vh) translateX(var(--sway)) rotateX(180deg) rotateY(120deg) rotateZ(calc(var(--rot) * 0.5));
+  }
+  90% {
+    opacity: 0.85;
+  }
+  100% {
+    transform: translateY(calc(100vh + 100px)) translateX(calc(var(--sway) * -0.6)) rotateX(360deg) rotateY(240deg) rotateZ(var(--rot));
+    opacity: 0;
+  }
+}
+
+/* Reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  .wedding-star, .wedding-bokeh, .wedding-petal {
+    display: none !important;
+  }
+}
