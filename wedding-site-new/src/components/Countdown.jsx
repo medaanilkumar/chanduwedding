@@ -77,7 +77,16 @@ export default function Countdown() {
         style={{ background: 'radial-gradient(circle, rgba(232,184,112,0.18) 0%, transparent 70%)' }} />
 
       <div className="max-w-3xl mx-auto px-4 sm:px-6 text-center relative z-10">
-        <SectionTitle sub="Days Until the Grand Celebration">Counting Down</SectionTitle>
+        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-gold/15 border border-gold/30 mb-4">
+          <span className="text-base">🥂</span>
+          <span style={{ fontFamily: 'Montserrat, sans-serif' }} className="text-[11px] font-semibold tracking-widest uppercase text-gold">
+            Grand Reception Countdown
+          </span>
+        </div>
+
+        <SectionTitle sub="Counting Down to the Grand Reception Feast & Celebrations">
+          Reception Countdown
+        </SectionTitle>
 
         <RevealSection variants={{ hidden: {}, visible: {} }}>
           <motion.div
@@ -108,21 +117,30 @@ export default function Countdown() {
           </motion.div>
         </RevealSection>
 
-        {/* Wedding date display */}
+        {/* Reception event card display */}
         <motion.div
           initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.9, delay: 0.3 }}
-          className="mt-8 sm:mt-12 card-peach rounded-2xl py-4 sm:py-5 px-5 sm:px-8 inline-block"
+          className="mt-8 sm:mt-12 card-peach rounded-2xl py-5 sm:py-6 px-6 sm:px-10 inline-block border border-gold/40 max-w-lg shadow-xl"
         >
-          <p className="section-label text-center" style={{ marginBottom: 6 }}>Reception</p>
-          <p style={{ fontFamily: 'Cormorant Garamond, serif', fontSize: 20, color: '#e8d8b0' }}>
+          <div className="flex items-center justify-center gap-2 mb-2">
+            <span className="text-xs uppercase font-mono tracking-widest text-gold font-semibold bg-gold/20 px-3 py-1 rounded-full border border-gold/40">
+              🥂 Grand Reception Event
+            </span>
+          </div>
+          <p style={{ fontFamily: 'Cormorant Garamond, serif', fontSize: 'clamp(20px, 4vw, 24px)', fontWeight: 600, color: '#f5c842' }}>
             Saturday, 28 November 2026
           </p>
-          <p style={{ fontFamily: 'Montserrat, sans-serif', fontSize: 11, color: 'rgba(245,200,66,0.7)', marginTop: 4 }}>
-            11:30 AM · Sri Venkateswara Kalyana Mandapam, NRT
+          <p style={{ fontFamily: 'Montserrat, sans-serif', fontSize: 12, color: '#ffffff', marginTop: 4, fontWeight: 500 }}>
+            11:30 AM Onwards · Sri Venkateswara Kalyana Mandapam, NRT
           </p>
+          <div className="mt-3 pt-3 border-t border-gold/20">
+            <p style={{ fontFamily: 'Cormorant Garamond, serif', fontSize: 13, color: 'rgba(200,180,140,0.75)', fontStyle: 'italic' }}>
+              (Sacred Marriage Muhurtham: Wednesday, 25 Nov 2026 · 8:36 AM at Annavaram Temple)
+            </p>
+          </div>
         </motion.div>
       </div>
     </section>
