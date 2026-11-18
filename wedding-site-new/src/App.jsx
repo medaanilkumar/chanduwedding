@@ -4,7 +4,7 @@ import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import RoyalPortrait from './components/RoyalPortrait';
 import ThemeSelector from './components/ThemeSelector';
-import AudioPlayer from './components/AudioPlayer';
+import BackgroundMusic from './components/BackgroundMusic';
 import Story from './components/Story';
 import ScratchReveal from './components/ScratchReveal';
 import Countdown from './components/Countdown';
@@ -19,7 +19,6 @@ import FloatingSkyLayer from './components/FloatingSkyLayer';
 import Cursor from './components/Cursor';
 import { GoldDust, Orbs, openingBurst, useSmoothScroll, useSceneEffects } from './effects/Effects';
 import './effects/effects.css';
-import { audioEngine } from './utils/audioEngine';
 import { config } from './config';
 
 function speakGreeting() {
@@ -80,7 +79,6 @@ export default function App() {
   const handleOpenInvitation = () => {
     openingBurst();
     speakGreeting();
-    audioEngine.start();
     setOpened(true);
   };
 
@@ -102,8 +100,8 @@ export default function App() {
       {/* Floating Theme Selector */}
       <ThemeSelector opened={opened} />
 
-      {/* Floating Royal Audio Player — Hidden as requested */}
-      {/* <AudioPlayer opened={opened} /> */}
+      {/* Background music (YouTube) with mute/play button */}
+      <BackgroundMusic opened={opened} />
 
       {/* Grand Envelope Cover Overlay */}
       {!opened && <Cover onOpen={handleOpenInvitation} />}

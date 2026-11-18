@@ -10,12 +10,12 @@ You are cordially invited to celebrate the grand reception of
 _#DC_
 
 📅 *Date:* Saturday, 28 November 2026
-⏰ *Time:* 6:30 PM onwards
+⏰ *Time:* 11:30 AM onwards
 📍 *Venue:* Sri Venkateswara Kalyana Mandapam, Pattabi Ramaswami Temple, NRT
 
 🗺 *Directions:* https://www.google.com/maps/place/Sri+Venkateswara+Kalyana+Mandapam/@16.2372829,80.0520491,17z
 
-Your presence and blessings will make this evening truly special! 🙏
+Your presence and blessings will make this day truly special! 🙏
 
 _— Pabbisetty's & Chevuri's_`;
 
@@ -88,7 +88,7 @@ export default function WhatsAppReminder() {
                   style={{ background: 'rgba(245,200,66,0.05)', border: '1px solid rgba(245,200,66,0.15)' }}>
                   <div className="flex items-start gap-2.5 text-xs text-ink/80 font-mono">
                     <span className="text-base">📅</span>
-                    <span>Saturday, <strong className="text-gold">28 November 2026</strong> · 6:30 PM</span>
+                    <span>Saturday, <strong className="text-gold">28 November 2026</strong> · 11:30 AM</span>
                   </div>
                   <div className="flex items-start gap-2.5 text-xs text-ink/70 font-mono">
                     <span className="text-base">📍</span>

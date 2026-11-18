@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import { SectionTitle, RevealSection, scaleUp } from '../utils/animations';
 import { config } from '../config';
 
-const TARGET = new Date('2026-11-28T18:30:00+05:30');
+const TARGET = new Date('2026-11-28T11:30:00+05:30');
 
 function getTimeLeft() {
   const diff = Math.max(0, TARGET - Date.now());
@@ -121,7 +121,7 @@ export default function Countdown() {
             Saturday, 28 November 2026
           </p>
           <p style={{ fontFamily: 'Montserrat, sans-serif', fontSize: 11, color: 'rgba(245,200,66,0.7)', marginTop: 4 }}>
-            6:30 PM · Sri Venkateswara Kalyana Mandapam, NRT
+            11:30 AM · Sri Venkateswara Kalyana Mandapam, NRT
           </p>
         </motion.div>
       </div>

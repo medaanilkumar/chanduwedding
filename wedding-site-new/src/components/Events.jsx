@@ -10,7 +10,7 @@ function formatEventCalUrl(event) {
   const end = new Date(start.getTime() + 4 * 60 * 60 * 1000); // 4 hrs duration
   const iso = (d) => d.toISOString().replace(/[-:]|\.\d{3}/g, '');
   const title = `${event.name} · ${config.groom} & ${config.bride} Wedding`;
-  const details = `${event.subTitle}\n${event.desc}\n\nDress Code: ${event.dressCode}`;
+  const details = `${event.subTitle}\n${event.desc}${event.dressCode ? `\n\nDress Code: ${event.dressCode}` : ''}`;
   const loc = `${event.venue}, ${config.venueName}, ${config.venueAddress}`;
 
   return `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(

@@ -69,7 +69,7 @@ export default function Footer() {
             {R.toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}
           </p>
           <p style={{ fontFamily: 'Montserrat, sans-serif', fontSize: 11, color: 'rgba(245,200,66,0.7)', marginTop: 4 }}>
-            6:30 PM · {config.receptionVenueName}
+            11:30 AM · {config.receptionVenueName}
           </p>
           <p style={{ fontFamily: 'Montserrat, sans-serif', fontSize: 11, color: 'rgba(200,180,140,0.6)', marginTop: 2 }}>
             {config.receptionVenueAddress}

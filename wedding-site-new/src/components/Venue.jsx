@@ -62,7 +62,7 @@ export default function Venue() {
                     Expected Weather · NRT (Nov)
                   </span>
                   <span className="text-sm font-semibold text-gold-l">
-                    26°C / 79°F · Pleasant Evening Breeze
+                    26°C / 79°F · Pleasant Morning Breeze
                   </span>
                 </div>
               </div>
@@ -70,18 +70,14 @@ export default function Venue() {
             </div>
 
             {/* Quick Details List */}
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
               <div className="p-3 rounded-xl bg-black/20 border border-gold/15">
                 <span className="text-[10px] font-mono text-gold/70 block uppercase">Date</span>
                 <span className="font-semibold text-ink">28 Nov 2026</span>
               </div>
               <div className="p-3 rounded-xl bg-black/20 border border-gold/15">
                 <span className="text-[10px] font-mono text-gold/70 block uppercase">Time</span>
-                <span className="font-semibold text-ink">6:30 PM</span>
-              </div>
-              <div className="p-3 rounded-xl bg-black/20 border border-gold/15">
-                <span className="text-[10px] font-mono text-gold/70 block uppercase">Attire</span>
-                <span className="font-semibold text-ink">Traditional Formal</span>
+                <span className="font-semibold text-ink">11:30 AM</span>
               </div>
             </div>
 
