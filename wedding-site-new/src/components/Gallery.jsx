@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Tilt from 'react-parallax-tilt';
 import { Heart, MapPin, X, ChevronLeft, ChevronRight, Camera, Sparkles } from 'lucide-react';
@@ -11,6 +11,18 @@ const CATEGORIES = ['All', 'The Proposal', 'Pre-Wedding', 'Candids'];
 export default function Gallery() {
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [activePhoto, setActivePhoto] = useState(null);
+
+  // Lock body scroll when modal is active
+  useEffect(() => {
+    if (activePhoto) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [activePhoto]);
   const [likes, setLikes] = useState(() => {
     const initial = {};
     config.gallery.forEach((item) => {
@@ -36,21 +48,35 @@ export default function Gallery() {
     }));
   };
 
-  const handlePrev = (e) => {
-    e.stopPropagation();
+  const handlePrev = useCallback((e) => {
+    if (e) e.stopPropagation();
+    if (!activePhoto) return;
     audioEngine.playChime();
     const currIdx = config.gallery.findIndex((p) => p.id === activePhoto.id);
     const prevIdx = (currIdx - 1 + config.gallery.length) % config.gallery.length;
     setActivePhoto(config.gallery[prevIdx]);
-  };
+  }, [activePhoto]);
 
-  const handleNext = (e) => {
-    e.stopPropagation();
+  const handleNext = useCallback((e) => {
+    if (e) e.stopPropagation();
+    if (!activePhoto) return;
     audioEngine.playChime();
     const currIdx = config.gallery.findIndex((p) => p.id === activePhoto.id);
     const nextIdx = (currIdx + 1) % config.gallery.length;
     setActivePhoto(config.gallery[nextIdx]);
-  };
+  }, [activePhoto]);
+
+  // Keyboard navigation for Lightbox
+  useEffect(() => {
+    if (!activePhoto) return;
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') setActivePhoto(null);
+      if (e.key === 'ArrowLeft') handlePrev();
+      if (e.key === 'ArrowRight') handleNext();
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [activePhoto, handlePrev, handleNext]);
 
   return (
     <section
@@ -227,82 +253,96 @@ export default function Gallery() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={() => setActivePhoto(null)}
-            className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-8 backdrop-blur-2xl bg-black/85"
+            className="fixed inset-0 z-[1000] flex items-center justify-center p-3 sm:p-8 backdrop-blur-2xl bg-black/90"
+            style={{ touchAction: 'pan-y' }}
           >
-            {/* Close Button */}
-            <button
-              onClick={() => setActivePhoto(null)}
-              className="absolute top-6 right-6 p-2 rounded-full card-peach text-gold hover:text-white border border-gold/40 z-50 transition-colors"
-            >
-              <X className="w-6 h-6" />
-            </button>
+            {/* Top Bar with Photo Counter and Close */}
+            <div className="absolute top-4 sm:top-6 left-4 sm:left-6 right-4 sm:right-6 flex items-center justify-between z-50 pointer-events-none">
+              <span className="pointer-events-auto px-3.5 py-1 rounded-full bg-black/60 border border-gold/40 text-[11px] font-mono text-gold backdrop-blur-md">
+                Photo {config.gallery.findIndex((p) => p.id === activePhoto.id) + 1} of {config.gallery.length}
+              </span>
+              <button
+                onClick={() => setActivePhoto(null)}
+                aria-label="Close enlarged photo"
+                className="pointer-events-auto p-2.5 rounded-full card-peach text-gold hover:text-white border border-gold/40 transition-colors shadow-lg active:scale-95"
+              >
+                <X className="w-5 h-5 sm:w-6 sm:h-6" />
+              </button>
+            </div>
 
-            {/* Navigation Arrows */}
+            {/* Navigation Arrows (Desktop & Tablet) */}
             <button
               onClick={handlePrev}
-              className="absolute left-4 top-1/2 -translate-y-1/2 p-3 rounded-full card-peach text-gold hover:text-white border border-gold/40 z-50 transition-transform hover:scale-110 hidden sm:block"
+              aria-label="Previous photo"
+              className="absolute left-3 sm:left-6 top-1/2 -translate-y-1/2 p-3 sm:p-3.5 rounded-full card-peach text-gold hover:text-white border border-gold/40 z-50 transition-all hover:scale-110 active:scale-95 shadow-xl flex items-center justify-center"
             >
-              <ChevronLeft className="w-6 h-6" />
+              <ChevronLeft className="w-5 h-5 sm:w-6 sm:h-6" />
             </button>
             <button
               onClick={handleNext}
-              className="absolute right-4 top-1/2 -translate-y-1/2 p-3 rounded-full card-peach text-gold hover:text-white border border-gold/40 z-50 transition-transform hover:scale-110 hidden sm:block"
+              aria-label="Next photo"
+              className="absolute right-3 sm:right-6 top-1/2 -translate-y-1/2 p-3 sm:p-3.5 rounded-full card-peach text-gold hover:text-white border border-gold/40 z-50 transition-all hover:scale-110 active:scale-95 shadow-xl flex items-center justify-center"
             >
-              <ChevronRight className="w-6 h-6" />
+              <ChevronRight className="w-5 h-6 sm:w-6 sm:h-6" />
             </button>
 
             {/* Modal Card */}
             <motion.div
-              initial={{ scale: 0.9, y: 20 }}
+              initial={{ scale: 0.92, y: 15 }}
               animate={{ scale: 1, y: 0 }}
-              exit={{ scale: 0.9, y: 20 }}
+              exit={{ scale: 0.92, y: 15 }}
+              transition={{ type: 'spring', damping: 25, stiffness: 300 }}
               onClick={(e) => e.stopPropagation()}
-              className="card-peach max-w-4xl w-full rounded-2xl overflow-hidden border border-gold/50 shadow-2xl relative"
+              className="card-peach max-w-4xl w-full rounded-2xl sm:rounded-3xl overflow-hidden border border-gold/50 shadow-2xl relative my-auto max-h-[92vh] flex flex-col"
               style={{ background: 'rgba(10, 20, 48, 0.98)' }}
             >
-              <div className="relative w-full overflow-hidden bg-black flex justify-center">
+              {/* Photo Display */}
+              <div className="relative w-full overflow-hidden bg-black flex items-center justify-center min-h-[220px] max-h-[60vh] sm:max-h-[68vh]">
                 <img
                   src={activePhoto.img}
                   alt={activePhoto.title}
-                  className="max-h-[65vh] w-auto max-w-full object-contain"
+                  className="w-auto h-auto max-h-[60vh] sm:max-h-[68vh] max-w-full object-contain select-none"
                 />
               </div>
 
-              <div className="p-6 sm:p-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-                <div>
+              {/* Photo Caption & Info */}
+              <div className="p-4 sm:p-6 sm:px-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-4 border-t border-gold/20 bg-gradient-to-b from-[#0d1b3e] to-[#0a152e]">
+                <div className="flex-1">
                   <div className="flex items-center gap-2 mb-1">
                     <span className="text-[10px] uppercase font-mono tracking-widest text-gold bg-gold/15 px-2.5 py-0.5 rounded-full border border-gold/30">
                       {activePhoto.category}
                     </span>
-                    <span className="text-xs text-muted flex items-center gap-1">
+                    <span className="text-xs text-muted flex items-center gap-1 font-mono">
                       <MapPin className="w-3 h-3 text-gold" /> {activePhoto.location}
                     </span>
                   </div>
                   <h3
                     style={{ fontFamily: 'Cormorant Garamond, serif' }}
-                    className="text-2xl sm:text-3xl font-semibold text-gold"
+                    className="text-xl sm:text-2xl font-semibold text-gold"
                   >
                     {activePhoto.title}
                   </h3>
                   <p
                     style={{ fontFamily: 'Cormorant Garamond, serif' }}
-                    className="text-base sm:text-lg text-ink/80 italic mt-1"
+                    className="text-sm sm:text-base text-ink/80 italic mt-0.5"
                   >
                     "{activePhoto.caption}"
                   </p>
                 </div>
 
-                <button
-                  onClick={(e) => handleLike(e, activePhoto.id)}
-                  className="btn-gold py-2.5 px-6 text-xs flex items-center gap-2 flex-shrink-0"
-                >
-                  <Heart
-                    className={`w-4 h-4 ${
-                      likedMap[activePhoto.id] ? 'fill-current' : ''
-                    }`}
-                  />
-                  <span>{likes[activePhoto.id]} Blessings</span>
-                </button>
+                <div className="flex items-center gap-3 w-full sm:w-auto justify-between sm:justify-end pt-1 sm:pt-0">
+                  <button
+                    onClick={(e) => handleLike(e, activePhoto.id)}
+                    className="btn-gold py-2.5 px-5 text-xs flex items-center gap-2 flex-shrink-0"
+                  >
+                    <Heart
+                      className={`w-4 h-4 ${
+                        likedMap[activePhoto.id] ? 'fill-current text-rose-300' : ''
+                      }`}
+                    />
+                    <span>{likes[activePhoto.id]} Blessings</span>
+                  </button>
+                </div>
               </div>
             </motion.div>
           </motion.div>
