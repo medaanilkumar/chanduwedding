@@ -182,11 +182,13 @@ export default function Cover({ onOpen }) {
   function handleTap() {
     if (phase !== 'idle') return;
     setPhase('opening');
-    setTimeout(() => setPhase('open'), 1400);
     setTimeout(() => {
+      setPhase('open');
       spawnPetals();
-      setTimeout(() => onOpen(), 700);
-    }, 2000);
+    }, 600);
+    setTimeout(() => {
+      onOpen();
+    }, 1400);
   }
 
   const initials = config.groom[0] + '&' + config.bride[0];
@@ -196,14 +198,13 @@ export default function Cover({ onOpen }) {
   const py = (mouse.y - 0.5) * 8;
 
   return (
-    <AnimatePresence>
-      {phase !== 'done' && (
-        <motion.div
-          key="cover"
-          className="fixed inset-0 overflow-hidden flex items-center justify-center"
-          style={{ zIndex: 200 }}
-          exit={{ opacity: 0, scale: 1.06, transition: { duration: 1, ease: 'easeInOut' } }}
-        >
+    <motion.div
+      key="cover"
+      className="fixed inset-0 overflow-hidden flex items-center justify-center"
+      style={{ zIndex: 200, willChange: 'opacity, transform' }}
+      initial={{ opacity: 1 }}
+      exit={{ opacity: 0, scale: 1.04, filter: 'blur(4px)', transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1] } }}
+    >
           {/* ── BACKGROUND with animated aurora ── */}
           <div className="absolute inset-0" style={{
             background: 'linear-gradient(160deg, #0a1628 0%, #0d1b3e 35%, #111830 65%, #0a1628 100%)',
@@ -515,8 +516,6 @@ export default function Cover({ onOpen }) {
             )}
           </AnimatePresence>
         </motion.div>
-      )}
-    </AnimatePresence>
   );
 }
 

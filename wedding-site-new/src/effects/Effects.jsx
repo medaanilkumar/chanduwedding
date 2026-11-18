@@ -18,7 +18,13 @@ export function openingBurst() {
 export function useSmoothScroll(active) {
   useEffect(() => {
     if (!active || reduced()) return
-    const lenis = new Lenis({ lerp: 0.085 })
+    const lenis = new Lenis({
+      lerp: 0.1,
+      duration: 1.1,
+      smoothWheel: true,
+      wheelMultiplier: 0.9,
+      touchMultiplier: 1.5,
+    })
     let id
     const raf = (t) => { lenis.raf(t); id = requestAnimationFrame(raf) }
     id = requestAnimationFrame(raf)

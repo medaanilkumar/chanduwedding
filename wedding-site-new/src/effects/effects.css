@@ -11,10 +11,17 @@ html.lenis, html.lenis body { height: auto; }
 .fx-orbs i:nth-child(3) { width: 36vmax; height: 36vmax; left: 20vw; bottom: -16vmax; background: radial-gradient(circle, rgba(15,35,100,0.8), transparent 65%); animation-delay: -15s; }
 @keyframes orbDrift { to { transform: translate(8vw, 10vh) scale(1.15); } }
 
-/* Scroll reveal: sections rise out of a soft blur */
-.fx-reveal { opacity: 0; transform: translateY(56px) scale(.985); filter: blur(8px);
-  transition: opacity 1.1s cubic-bezier(.2,.8,.2,1), transform 1.1s cubic-bezier(.2,.8,.2,1), filter 1.1s; }
-.fx-reveal.fx-in { opacity: 1; transform: none; filter: none; }
+/* Scroll reveal: sections rise smoothly with hardware acceleration */
+.fx-reveal {
+  opacity: 0;
+  transform: translateY(32px);
+  will-change: transform, opacity;
+  transition: opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1), transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.fx-reveal.fx-in {
+  opacity: 1;
+  transform: translateY(0);
+}
 
 /* Cards: 3D tilt with a light glare that follows the pointer */
 .card-peach { position: relative; will-change: transform;

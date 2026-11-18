@@ -102,12 +102,24 @@ export const config = {
     },
   ],
 
-  // Celebrations / Events
+  // Celebrations / Events (chronological order with verified days of week)
   events: [
+    {
+      name: 'Mehendi',
+      subTitle: 'Intricate Henna & Folk Melodies',
+      date: 'Mon, 23 Nov 2026',
+      time: '6:30 PM',
+      dateTimeIso: '2026-11-23T18:30:00+05:30',
+      icon: '🌸',
+      tagline: 'Darkening henna, sweet beats & bridal joy',
+      desc: 'An evening of delicate henna artistry celebrating love\'s deep imprint. Enjoy live music, colorful bangle stalls, and authentic street chaat stations.',
+      palette: ['#2ECC71', '#1ABC9C', '#E67E22', '#F1C40F'],
+      venue: 'Ch. Chandrika, 2-15-52/8, Raghavendra Complex, Opp BSNL Office, Narasaraopet 522601, Andhra Pradesh · 9951979547 / 6302083678',
+    },
     {
       name: 'Haldi',
       subTitle: 'The Golden Glow & Auspicious Turmeric',
-      date: 'Mon, 24 Nov 2026',
+      date: 'Tue, 24 Nov 2026',
       time: '10:00 AM',
       dateTimeIso: '2026-11-24T10:00:00+05:30',
       icon: '🌿',
@@ -116,18 +128,6 @@ export const config = {
       dressCode: 'Sunburst Yellows, Mustard, Cream & Floral Prints',
       palette: ['#F5C842', '#F9CA24', '#FFF3C4', '#F0932B'],
       venue: 'Kubhera Heights Apartment, Near Stadium, Narasaraopet 522601',
-    },
-    {
-      name: 'Mehendi',
-      subTitle: 'Intricate Henna & Folk Melodies',
-      date: 'Sun, 23 Nov 2026',
-      time: '6:30 PM',
-      dateTimeIso: '2026-11-23T18:30:00+05:30',
-      icon: '🌸',
-      tagline: 'Darkening henna, sweet beats & bridal joy',
-      desc: 'An evening of delicate henna artistry celebrating love\'s deep imprint. Enjoy live music, colorful bangle stalls, and authentic street chaat stations.',
-      palette: ['#2ECC71', '#1ABC9C', '#E67E22', '#F1C40F'],
-      venue: 'Ch. Chandrika, 2-15-52/8, Raghavendra Complex, Opp BSNL Office, Narasaraopet 522601, Andhra Pradesh · 9951979547 / 6302083678',
     },
     {
       name: 'Wedding Ceremony',

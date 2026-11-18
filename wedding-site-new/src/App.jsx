@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { AnimatePresence } from 'framer-motion';
 import Cover from './components/Cover';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
@@ -118,7 +119,9 @@ export default function App() {
       <BackgroundMusic opened={opened} start={musicStart} />
 
       {/* Grand Envelope Cover Overlay */}
-      {!opened && <Cover onOpen={handleOpenInvitation} />}
+      <AnimatePresence mode="wait">
+        {!opened && <Cover onOpen={handleOpenInvitation} />}
+      </AnimatePresence>
 
       {/* Fixed Navigation bar */}
       <Navbar scrollY={scrollY} opened={opened} />

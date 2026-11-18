@@ -60,7 +60,7 @@
   }
 
   * { -webkit-tap-highlight-color: transparent; box-sizing: border-box; }
-  html { scroll-behavior: smooth; background: var(--bg-base); overflow-x: hidden; }
+  html { scroll-behavior: auto; background: var(--bg-base); overflow-x: hidden; }
   body {
     background: var(--bg-base);
     color: var(--ink);

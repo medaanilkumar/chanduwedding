@@ -42,7 +42,7 @@ export default function ScratchReveal() {
   const lastPointRef = useRef(null);
   const doneRef = useRef(false);
   const D = new Date(config.date); // wedding day
-  const R_DATE = new Date('2026-11-28T11:30:00+05:30'); // reception day
+  const R_DATE = new Date(config.receptionDate || '2026-11-28T11:30:00+05:30'); // reception day
 
   /* ── Draw 100% Solid Opaque Gold Foil ── */
   const drawFoil = useCallback(() => {
