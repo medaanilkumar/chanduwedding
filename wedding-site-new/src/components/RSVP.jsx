@@ -360,7 +360,7 @@ export default function RSVP() {
                   <div className="space-y-1 text-left w-full sm:w-auto">
                     <div className="flex items-center gap-2 text-xs text-gold">
                       <Calendar className="w-3.5 h-3.5" />
-                      <span>Wednesday, 25 November 2026 · 8:00 AM</span>
+                      <span>Wednesday, 25 November 2026 · 8:36 AM</span>
                     </div>
                     <div className="flex items-center gap-2 text-xs text-ink/80">
                       <MapPin className="w-3.5 h-3.5 text-gold" />

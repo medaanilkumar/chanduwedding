@@ -18,7 +18,7 @@ export const config = {
   brideParents: 'Younger Daughter of Chevuri Venkatakrishna & Sridevi',
   groomProfession: '',
   brideProfession: '',
-  date: '2026-11-25T08:00:00+05:30',
+  date: '2026-11-25T08:36:00+05:30',
   venueName: 'Annavaram Temple',
   venueAddress: 'Annavaram, Andhra Pradesh',
   receptionDate: '2026-11-28T11:30:00+05:30',
@@ -133,8 +133,8 @@ export const config = {
       name: 'Wedding Ceremony',
       subTitle: 'The Sacred Muhurtham & Vows',
       date: 'Wed, 25 Nov 2026',
-      time: '8:00 AM',
-      dateTimeIso: '2026-11-25T08:00:00+05:30',
+      time: '8:36 AM',
+      dateTimeIso: '2026-11-25T08:36:00+05:30',
       icon: '💍',
       tagline: 'Sacred rituals, Vedic chants & eternal promises',
       desc: 'Beneath the divine blessings of Lord Veera Venkata Satyanarayana at Annavaram Temple, Deepu and Chandu exchange garlands and take their sacred vows surrounded by the love of family and friends.',
@@ -159,7 +159,7 @@ export const config = {
   // Program timeline
   timeline: [
     { time: '7:00 AM', title: 'Shehnai Welcome', desc: 'Guests arrive to fragrant jasmine gajras, fresh offerings, and the divine aura of Annavaram Temple.' },
-    { time: '8:00 AM', title: 'Sacred Ceremony Begins', desc: 'The auspicious muhurtham begins with Vedic chants and sacred rituals at the temple.' },
+    { time: '8:36 AM', title: 'Sacred Ceremony Begins', desc: 'The auspicious muhurtham begins with Vedic chants and sacred rituals at the temple.' },
     { time: '9:00 AM', title: 'Jaimala & Exchange of Vows', desc: 'Deepu and Chandu exchange fragrant flower garlands and sacred vows in front of their loved ones.' },
     { time: '10:30 AM', title: 'Saptapadi & Blessings', desc: 'The seven sacred steps around the holy fire, mangalsutra, and blessings from elders.' },
     { time: '12:00 PM', title: 'Wedding Feast', desc: 'A traditional feast bringing family and friends together in celebration.' },
