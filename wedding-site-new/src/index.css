@@ -96,6 +96,8 @@
     background-clip: text;
     color: transparent;
     animation: goldShimmer 5s linear infinite;
+    /* Great Vibes swashes overflow the line box; background-clip:text would crop them */
+    padding: 0.25em 0.2em;
   }
 
   .glass-peach {
