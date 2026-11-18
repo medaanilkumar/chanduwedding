@@ -5,15 +5,11 @@ import p04312 from './images/RAJ04312.JPG.jpeg';
 import p04363 from './images/RAJ04363.JPG.jpeg';
 import p04454 from './images/RAJ04454.JPG.jpeg';
 import p04825 from './images/RAJ04825.JPG.jpeg';
-import p04835 from './images/RAJ04835.JPG.jpeg';
-import p05022 from './images/RAJ05022.JPG.jpeg';
 import p05039 from './images/RAJ05039.JPG.jpeg';
-import p05047 from './images/RAJ05047.JPG.jpeg';
 import p05363 from './images/RAJ05363.JPG.jpeg';
 import p05394 from './images/RAJ05394.JPG.jpeg';
 import p05417 from './images/RAJ05417.JPG.jpeg';
 import p05438 from './images/RAJ05438.JPG.jpeg';
-import p05441 from './images/RAJ05441.JPG.jpeg';
 
 export const config = {
   groom: 'Deepu',
@@ -171,11 +167,8 @@ export const config = {
 
   // Photo Gallery (couple photos first)
   gallery: [
-    { id: 1, title: 'Garlands of Forever', category: 'Pre-Wedding', location: 'Andhra Pradesh', img: p05022, caption: 'Where our forever begins — under the divine blessings of Lord Veera Venkata Satyanarayana.', likes: 284 },
     { id: 2, title: 'Side by Side', category: 'Pre-Wedding', location: 'Andhra Pradesh', img: p04825, caption: 'Wrapped in tradition and the warmth of family, counting days to our sacred vows.', likes: 219 },
-    { id: 3, title: 'Golden Evening', category: 'Pre-Wedding', location: 'Andhra Pradesh', img: p04835, caption: 'In the glow of golden hour, every promise felt like eternity.', likes: 262 },
     { id: 4, title: 'Spin Me Around', category: 'Candids', location: 'Andhra Pradesh', img: p05039, caption: 'When joy is too big to contain — this is us, always.', likes: 175 },
-    { id: 5, title: 'Laughter & Love', category: 'Candids', location: 'Andhra Pradesh', img: p05047, caption: 'Our favorite moments where one look says everything without a word.', likes: 147 },
     { id: 6, title: 'Butterfly Dreams', category: 'Pre-Wedding', location: 'Andhra Pradesh', img: p04454, caption: 'Two hearts, one beautiful beginning.', likes: 198 },
     { id: 7, title: 'Sealed with a Ring', category: 'The Proposal', location: 'Andhra Pradesh', img: p05394, caption: 'A promise, a ring, and a lifetime ahead.', likes: 231 },
     { id: 8, title: 'Hands & Hearts', category: 'The Proposal', location: 'Andhra Pradesh', img: p05363, caption: 'The smallest circle holding the biggest promise.', likes: 190 },
@@ -183,7 +176,6 @@ export const config = {
     { id: 10, title: 'Deepu', category: 'Candids', location: 'Andhra Pradesh', img: p04239, caption: 'Calm, steady, and ready for forever.', likes: 168 },
     { id: 11, title: 'Chandu in Gold', category: 'Candids', location: 'Andhra Pradesh', img: p05417, caption: 'Tradition never looked so beautiful.', likes: 177 },
     { id: 12, title: 'Deepu in Style', category: 'Candids', location: 'Andhra Pradesh', img: p05438, caption: 'Dressed for the biggest day of his life.', likes: 154 },
-    { id: 13, title: 'The Groom', category: 'Candids', location: 'Andhra Pradesh', img: p05441, caption: 'A smile that says it all.', likes: 160 },
     { id: 14, title: 'Silhouette of Deepu', category: 'Pre-Wedding', location: 'Andhra Pradesh', img: p04312, caption: 'Quiet moments before the celebration.', likes: 121 },
     { id: 15, title: 'Silhouette of Chandu', category: 'Pre-Wedding', location: 'Andhra Pradesh', img: p04363, caption: 'Grace in every shadow and light.', likes: 133 },
   ],
