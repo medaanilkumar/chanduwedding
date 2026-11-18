@@ -9,6 +9,7 @@ const NAV_LINKS = [
 
 export default function Footer() {
   const D = new Date(config.date);
+  const R = new Date(config.receptionDate);
   return (
     <footer className="relative pt-16 sm:pt-28 pb-12 overflow-hidden text-center"
       style={{ background: 'linear-gradient(180deg, #0d1b3e 0%, #111830 40%, #0f1520 100%)' }}>
@@ -63,12 +64,15 @@ export default function Footer() {
           transition={{ duration: 0.9, delay: 0.5 }}
           className="card-peach inline-block px-8 py-5 mt-8"
         >
-          <p className="section-label text-center mb-2">The Wedding Day</p>
+          <p className="section-label text-center mb-2">Reception</p>
           <p style={{ fontFamily: 'Cormorant Garamond, serif', fontSize: 20, color: '#e8d8b0' }}>
-            {D.toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}
+            {R.toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}
           </p>
           <p style={{ fontFamily: 'Montserrat, sans-serif', fontSize: 11, color: 'rgba(245,200,66,0.7)', marginTop: 4 }}>
-            6:30 PM · {config.venueName}
+            6:30 PM · {config.receptionVenueName}
+          </p>
+          <p style={{ fontFamily: 'Montserrat, sans-serif', fontSize: 11, color: 'rgba(200,180,140,0.6)', marginTop: 2 }}>
+            {config.receptionVenueAddress}
           </p>
         </motion.div>
 

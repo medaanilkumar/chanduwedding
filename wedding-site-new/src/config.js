@@ -1,4 +1,4 @@
-﻿// Wedding config — Deepu & Chandu Edition
+// Wedding config — Deepu & Chandu Edition
 import p04236 from './images/RAJ04236.JPG.jpeg';
 import p04239 from './images/RAJ04239.JPG.jpeg';
 import p04312 from './images/RAJ04312.JPG.jpeg';
@@ -21,6 +21,9 @@ export const config = {
   date: '2026-11-25T08:00:00+05:30',
   venueName: 'Annavaram Temple',
   venueAddress: 'Annavaram, Andhra Pradesh',
+  receptionDate: '2026-11-28T18:30:00+05:30',
+  receptionVenueName: 'Sri Venkateswara Kalyana Mandapam',
+  receptionVenueAddress: 'Pattabi Ramaswami Temple, NRT',
   venueMapUrl: 'https://www.google.com/maps/place/Sri+Venkateswara+Kalyana+Mandapam/@16.2372829,80.0520491,17z',
   whatsapp: '910000000000',
   rsvpDeadline: '20 November 2026',

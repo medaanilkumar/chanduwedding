@@ -40,11 +40,11 @@ export default function Venue() {
                   style={{ fontFamily: 'Cormorant Garamond, serif' }}
                   className="text-3xl sm:text-4xl font-bold text-gold"
                 >
-                  {config.venueName}
+                  {config.receptionVenueName}
                 </h3>
                 <p className="text-xs sm:text-sm text-ink/80 mt-1 flex items-center gap-1.5">
                   <MapPin className="w-3.5 h-3.5 text-gold flex-shrink-0" />
-                  {config.venueAddress}
+                  {config.receptionVenueAddress}
                 </p>
               </div>
 
