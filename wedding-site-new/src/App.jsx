@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { AnimatePresence } from 'framer-motion';
+import { Analytics } from '@vercel/analytics/react';
 import Cover from './components/Cover';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
@@ -157,6 +158,7 @@ export default function App() {
         <Footer />
       </main>
       <BackToTop />
+      <Analytics />
     </>
   );
 }
