@@ -4,14 +4,14 @@ import musicSrc from '../images/background-music.mp3';
 
 const VOLUME = 0.45;
 
-export default function BackgroundMusic({ opened }) {
+export default function BackgroundMusic({ opened, start }) {
   const audioRef = useRef(null);
   const resumeAfterVideo = useRef(false);
   const [playing, setPlaying] = useState(false);
 
-  // Start the music once the invitation is opened (that click allows audio to play).
+  // Create the audio once. The first tap "unlocks" it, so phones allow it to start
+  // later (after the spoken greeting) without another tap.
   useEffect(() => {
-    if (!opened) return undefined;
     const audio = new Audio(musicSrc);
     audio.loop = true;
     audio.volume = VOLUME;
@@ -21,16 +21,38 @@ export default function BackgroundMusic({ opened }) {
     audio.addEventListener('play', onPlay);
     audio.addEventListener('pause', onPause);
     audioRef.current = audio;
-    audio.play().catch(() => setPlaying(false));
+
+    const unlock = () => {
+      audio.muted = true;
+      audio
+        .play()
+        .then(() => {
+          audio.pause();
+          audio.currentTime = 0;
+          audio.muted = false;
+        })
+        .catch(() => {
+          audio.muted = false;
+        });
+    };
+    window.addEventListener('pointerdown', unlock, { once: true });
 
     return () => {
+      window.removeEventListener('pointerdown', unlock);
       audio.pause();
       audio.removeEventListener('play', onPlay);
       audio.removeEventListener('pause', onPause);
       audioRef.current = null;
       setPlaying(false);
     };
-  }, [opened]);
+  }, []);
+
+  // Start the music once the invitation is open and the greeting has finished.
+  useEffect(() => {
+    if (opened && start && audioRef.current) {
+      audioRef.current.play().catch(() => {});
+    }
+  }, [opened, start]);
 
   // Pause the music while the wedding video plays; resume it afterwards.
   useEffect(() => {

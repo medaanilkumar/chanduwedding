@@ -21,8 +21,17 @@ import { GoldDust, Orbs, openingBurst, useSmoothScroll, useSceneEffects } from '
 import './effects/effects.css';
 import { config } from './config';
 
-function speakGreeting() {
-  if (!window.speechSynthesis) return;
+function speakGreeting(onDone) {
+  let finished = false;
+  const finish = () => {
+    if (finished) return;
+    finished = true;
+    onDone();
+  };
+  if (!window.speechSynthesis) {
+    finish();
+    return;
+  }
   window.speechSynthesis.cancel();
   const guest = localStorage.getItem('wedding_guest_name');
   const greetingText = guest
@@ -40,11 +49,16 @@ function speakGreeting() {
     voices.find((v) => v.lang.startsWith('en')) ||
     voices[0];
   if (preferred) msg.voice = preferred;
+  msg.onend = finish;
+  msg.onerror = finish;
   window.speechSynthesis.speak(msg);
+  // Fallback: start the music anyway if the browser never reports the end of the speech
+  setTimeout(finish, 15000);
 }
 
 export default function App() {
   const [opened, setOpened] = useState(false);
+  const [musicStart, setMusicStart] = useState(false);
   const [scrollY, setScrollY] = useState(0);
 
   useSmoothScroll(opened);
@@ -78,7 +92,7 @@ export default function App() {
 
   const handleOpenInvitation = () => {
     openingBurst();
-    speakGreeting();
+    speakGreeting(() => setMusicStart(true));
     setOpened(true);
   };
 
@@ -100,8 +114,8 @@ export default function App() {
       {/* Floating Theme Selector */}
       <ThemeSelector opened={opened} />
 
-      {/* Background music (YouTube) with mute/play button */}
-      <BackgroundMusic opened={opened} />
+      {/* Background music: starts after the spoken greeting ends; mute/play button */}
+      <BackgroundMusic opened={opened} start={musicStart} />
 
       {/* Grand Envelope Cover Overlay */}
       {!opened && <Cover onOpen={handleOpenInvitation} />}
