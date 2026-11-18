@@ -4,6 +4,7 @@ import weddingVideo from '../images/wedding-video.mp4';
 import posterImg from '../images/RAJ04825.JPG.jpeg';
 
 const notify = (name) => window.dispatchEvent(new Event(name));
+const START_AT = 5; // seconds to skip at the beginning of the video
 
 export default function VideoSection() {
   return (
@@ -25,11 +26,14 @@ export default function VideoSection() {
           className="mx-auto max-w-sm rounded-2xl overflow-hidden border border-gold/40 shadow-2xl"
         >
           <video
-            src={weddingVideo}
+            src={`${weddingVideo}#t=${START_AT}`}
             poster={posterImg}
             onPlay={() => notify('wedding:video-play')}
             onPause={() => notify('wedding:video-stop')}
-            onEnded={() => notify('wedding:video-stop')}
+            onEnded={(e) => {
+              e.currentTarget.currentTime = START_AT; // replay also starts at 5s
+              notify('wedding:video-stop');
+            }}
             controls
             playsInline
             preload="metadata"
