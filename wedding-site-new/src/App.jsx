@@ -10,6 +10,7 @@ import BackgroundMusic from './components/BackgroundMusic';
 import Story from './components/Story';
 import ScratchReveal from './components/ScratchReveal';
 import Countdown from './components/Countdown';
+import DayOfBanner from './components/DayOfBanner';
 import VideoSection from './components/VideoSection';
 import Events from './components/Events';
 import Gallery from './components/Gallery';
@@ -129,6 +130,7 @@ export default function App() {
 
       {/* Main Page Content */}
       <main style={{ position: 'relative', zIndex: 2 }}>
+        <DayOfBanner />
         <Hero opened={opened} />
 
         <div className="divider" />
