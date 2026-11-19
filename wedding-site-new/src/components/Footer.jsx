@@ -105,7 +105,7 @@ export default function Footer() {
           Made with ❤️ for {config.groom} &amp; {config.bride} · {D.getFullYear()}
         </p>
         <p style={{ fontFamily: 'Montserrat, sans-serif', fontSize: 10, color: 'rgba(200,180,140,0.35)', marginTop: 6 }}>
-          Designed by Anil Kumar · 9439295464
+          Designed by Meda Anil Kumar · 9493925464
         </p>
       </div>
     </footer>
