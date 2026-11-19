@@ -6,18 +6,21 @@ const LIVE_WINDOW_MS = 4 * 60 * 60 * 1000;
 const istDay = (ms) =>
   new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Kolkata', year: 'numeric', month: '2-digit', day: '2-digit' }).format(ms);
 
-// Returns the status to show at `now`, or null when no event is scheduled that IST day.
+// Returns the live event, otherwise the next upcoming event, or null when none remain.
 function getDayOfStatus(events, now) {
-  const today = events.filter((ev) => istDay(new Date(ev.dateTimeIso).getTime()) === istDay(now));
-  const live = today.find((ev) => {
+  const live = events.find((ev) => {
     const start = new Date(ev.dateTimeIso).getTime();
     return now >= start && now < start + LIVE_WINDOW_MS;
   });
   if (live) return { type: 'live', event: live };
 
-  const next = today.find((ev) => new Date(ev.dateTimeIso).getTime() > now);
-  if (next) return { type: 'next', event: next };
-  return null;
+  const upcoming = events
+    .filter((ev) => new Date(ev.dateTimeIso).getTime() > now)
+    .sort((a, b) => new Date(a.dateTimeIso) - new Date(b.dateTimeIso))[0];
+  if (!upcoming) return null;
+
+  const sameDay = istDay(new Date(upcoming.dateTimeIso).getTime()) === istDay(now);
+  return { type: sameDay ? 'next' : 'upcoming', event: upcoming };
 }
 
 export default function DayOfBanner({ events = config.events, now }) {
@@ -33,7 +36,7 @@ export default function DayOfBanner({ events = config.events, now }) {
   if (!status) return null;
 
   const { type, event } = status;
-  const label = type === 'live' ? 'Happening now' : 'Next up';
+  const label = { live: 'Happening now', next: 'Next up', upcoming: 'Upcoming' }[type];
 
   return (
     <div
@@ -50,7 +53,7 @@ export default function DayOfBanner({ events = config.events, now }) {
         className="mt-1 text-lg text-gold"
         style={{ fontFamily: 'Cormorant Garamond, serif', fontWeight: 600 }}
       >
-        {event.name} · {event.time}
+        {event.name} · {type === 'upcoming' ? `${event.date}, ${event.time}` : event.time}
       </p>
       <p className="text-sm text-ink/80" style={{ fontFamily: 'Montserrat, sans-serif' }}>
         {event.venue}
