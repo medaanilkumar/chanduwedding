@@ -1,5 +1,5 @@
-import { describe, it, expect, beforeEach } from 'vitest';
-import { render, screen, fireEvent, cleanup } from '@testing-library/react';
+import { describe, it, expect, beforeEach, vi } from 'vitest';
+import { render, screen, fireEvent, cleanup, act } from '@testing-library/react';
 import DayOfBanner from '../components/DayOfBanner';
 
 const events = [
@@ -50,6 +50,23 @@ describe('DayOfBanner popup', () => {
 
     render(<DayOfBanner events={events} now={now} opened />);
     expect(screen.queryByRole('dialog')).toBeNull();
+  });
+
+  it('closes automatically after 15 seconds', () => {
+    vi.useFakeTimers();
+    const now = new Date('2026-11-25T09:00:00+05:30').getTime();
+    render(<DayOfBanner events={events} now={now} opened />);
+    expect(screen.getByRole('dialog')).toBeDefined();
+    act(() => {
+      vi.advanceTimersByTime(14 * 1000);
+    });
+    expect(screen.queryByRole('dialog')).not.toBeNull();
+    act(() => {
+      vi.advanceTimersByTime(1000);
+    });
+    expect(screen.queryByRole('dialog')).toBeNull();
+    expect(sessionStorage.getItem('dayOfPopupSeen')).toBe('1');
+    vi.useRealTimers();
   });
 
   it('renders nothing once all events have passed', () => {

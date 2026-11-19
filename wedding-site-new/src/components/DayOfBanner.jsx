@@ -4,6 +4,7 @@ import { config } from '../config';
 
 const LIVE_WINDOW_MS = 4 * 60 * 60 * 1000;
 const SEEN_KEY = 'dayOfPopupSeen';
+const AUTO_CLOSE_MS = 15 * 1000;
 
 const istDay = (ms) =>
   new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Kolkata', year: 'numeric', month: '2-digit', day: '2-digit' }).format(ms);
@@ -47,6 +48,12 @@ export default function DayOfBanner({ events = config.events, now, opened = true
     };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
+  }, [opened, dismissed]);
+
+  useEffect(() => {
+    if (!opened || dismissed) return;
+    const id = setTimeout(close, AUTO_CLOSE_MS);
+    return () => clearTimeout(id);
   }, [opened, dismissed]);
 
   if (!opened || dismissed) return null;
