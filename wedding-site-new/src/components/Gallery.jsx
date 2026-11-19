@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
+import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Heart, MapPin, X, ChevronLeft, ChevronRight, Camera, Sparkles, ZoomIn } from 'lucide-react';
 import { SectionTitle } from '../utils/animations';
@@ -257,7 +258,8 @@ export default function Gallery() {
         </div>
       </div>
 
-      {/* Fullscreen Lightbox Modal */}
+      {/* Fullscreen Lightbox Modal (portaled to body so ancestor transforms/overflow can't break fixed positioning) */}
+      {createPortal(
       <AnimatePresence>
         {activePhoto && (
           <motion.div
@@ -364,7 +366,9 @@ export default function Gallery() {
             </motion.div>
           </motion.div>
         )}
-      </AnimatePresence>
+      </AnimatePresence>,
+      document.body
+      )}
     </section>
   );
 }
