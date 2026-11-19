@@ -40,6 +40,20 @@ describe('DayOfBanner popup', () => {
     expect(screen.queryByRole('dialog')).toBeNull();
   });
 
+  it('calls onClose when the popup is closed', () => {
+    const onClose = vi.fn();
+    const now = new Date('2026-11-25T09:00:00+05:30').getTime();
+    render(<DayOfBanner events={events} now={now} opened onClose={onClose} />);
+    fireEvent.click(screen.getByRole('button', { name: 'Close' }));
+    expect(onClose).toHaveBeenCalledTimes(1);
+  });
+
+  it('calls onClose straight away when there is no popup to show', () => {
+    const onClose = vi.fn();
+    render(<DayOfBanner events={events} now={new Date('2026-11-30T10:00:00+05:30').getTime()} opened onClose={onClose} />);
+    expect(onClose).toHaveBeenCalledTimes(1);
+  });
+
   it('closes when the Close button is clicked', () => {
     const now = new Date('2026-11-25T09:00:00+05:30').getTime();
     render(<DayOfBanner events={events} now={now} opened />);

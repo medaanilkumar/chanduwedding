@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import { config } from '../config';
 
@@ -25,9 +25,13 @@ function getDayOfStatus(events, now) {
   return { type: sameDay ? 'next' : 'upcoming', event: upcoming };
 }
 
-export default function DayOfBanner({ events = config.events, now, opened = true }) {
+export default function DayOfBanner({ events = config.events, now, opened = true, onClose }) {
   const [dismissed, setDismissed] = useState(false);
   const [current, setCurrent] = useState(() => now ?? Date.now());
+  const onCloseRef = useRef(onClose);
+  useEffect(() => {
+    onCloseRef.current = onClose;
+  }, [onClose]);
 
   useEffect(() => {
     if (now !== undefined) return;
@@ -35,7 +39,10 @@ export default function DayOfBanner({ events = config.events, now, opened = true
     return () => clearInterval(id);
   }, [now]);
 
-  const close = () => setDismissed(true);
+  const close = () => {
+    setDismissed(true);
+    onCloseRef.current?.();
+  };
 
   useEffect(() => {
     if (!opened || dismissed) return;
@@ -50,9 +57,14 @@ export default function DayOfBanner({ events = config.events, now, opened = true
     };
   }, [opened, dismissed]);
 
-  if (!opened || dismissed) return null;
   const status = getDayOfStatus(events, now ?? current);
-  if (!status) return null;
+  const hasPopup = Boolean(status);
+
+  useEffect(() => {
+    if (opened && !dismissed && !hasPopup) onCloseRef.current?.();
+  }, [opened, dismissed, hasPopup]);
+
+  if (!opened || dismissed || !status) return null;
 
   const { type, event } = status;
   const label = { live: 'Happening now', next: 'Next up', upcoming: 'Upcoming' }[type];

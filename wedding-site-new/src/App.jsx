@@ -95,8 +95,11 @@ export default function App() {
 
   const handleOpenInvitation = () => {
     openingBurst();
-    speakGreeting(() => setMusicStart(true));
     setOpened(true);
+  };
+
+  const handlePopupClosed = () => {
+    speakGreeting(() => setMusicStart(true));
   };
 
   return (
@@ -129,7 +132,7 @@ export default function App() {
       <Navbar scrollY={scrollY} opened={opened} />
 
       {/* Day-of popup: shows once per session after the invitation opens */}
-      <DayOfBanner opened={opened} />
+      <DayOfBanner opened={opened} onClose={handlePopupClosed} />
 
       {/* Main Page Content */}
       <main style={{ position: 'relative', zIndex: 2 }}>
