@@ -128,9 +128,11 @@ export default function App() {
       {/* Fixed Navigation bar */}
       <Navbar scrollY={scrollY} opened={opened} />
 
+      {/* Day-of popup: shows once per session after the invitation opens */}
+      <DayOfBanner opened={opened} />
+
       {/* Main Page Content */}
       <main style={{ position: 'relative', zIndex: 2 }}>
-        <DayOfBanner />
         <Hero opened={opened} />
 
         <div className="divider" />
