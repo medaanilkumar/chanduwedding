@@ -4,7 +4,6 @@ import { config } from '../config';
 const NAV_LINKS = [
   { label: 'Events', href: '#events' },
   { label: 'Venue',  href: '#venue' },
-  { label: 'Travel', href: '#travel' },
 ];
 
 export default function Footer() {

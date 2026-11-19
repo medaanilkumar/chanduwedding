@@ -9,7 +9,6 @@ const NAV_LINKS = [
   { label: 'Moments', href: '#gallery' },
   { label: 'Venue', href: '#venue' },
   { label: 'Blessings', href: '#guestbook' },
-  { label: 'Travel', href: '#travel' },
 ];
 
 export default function Navbar({ scrollY, opened }) {
