@@ -3,7 +3,7 @@ import { createPortal } from 'react-dom';
 import { config } from '../config';
 
 const LIVE_WINDOW_MS = 4 * 60 * 60 * 1000;
-const AUTO_CLOSE_MS = 15 * 1000;
+const AUTO_CLOSE_MS = 10 * 1000;
 
 const istDay = (ms) =>
   new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Kolkata', year: 'numeric', month: '2-digit', day: '2-digit' }).format(ms);

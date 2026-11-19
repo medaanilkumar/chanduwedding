@@ -57,13 +57,13 @@ describe('DayOfBanner popup', () => {
     expect(screen.getByRole('dialog')).toBeDefined();
   });
 
-  it('closes automatically after 15 seconds', () => {
+  it('closes automatically after 10 seconds', () => {
     vi.useFakeTimers();
     const now = new Date('2026-11-25T09:00:00+05:30').getTime();
     render(<DayOfBanner events={events} now={now} opened />);
     expect(screen.getByRole('dialog')).toBeDefined();
     act(() => {
-      vi.advanceTimersByTime(14 * 1000);
+      vi.advanceTimersByTime(9 * 1000);
     });
     expect(screen.queryByRole('dialog')).not.toBeNull();
     act(() => {
