@@ -3,7 +3,6 @@ import { createPortal } from 'react-dom';
 import { config } from '../config';
 
 const LIVE_WINDOW_MS = 4 * 60 * 60 * 1000;
-const SEEN_KEY = 'dayOfPopupSeen';
 const AUTO_CLOSE_MS = 15 * 1000;
 
 const istDay = (ms) =>
@@ -27,7 +26,7 @@ function getDayOfStatus(events, now) {
 }
 
 export default function DayOfBanner({ events = config.events, now, opened = true }) {
-  const [dismissed, setDismissed] = useState(() => sessionStorage.getItem(SEEN_KEY) === '1');
+  const [dismissed, setDismissed] = useState(false);
   const [current, setCurrent] = useState(() => now ?? Date.now());
 
   useEffect(() => {
@@ -36,10 +35,7 @@ export default function DayOfBanner({ events = config.events, now, opened = true
     return () => clearInterval(id);
   }, [now]);
 
-  const close = () => {
-    sessionStorage.setItem(SEEN_KEY, '1');
-    setDismissed(true);
-  };
+  const close = () => setDismissed(true);
 
   useEffect(() => {
     if (!opened || dismissed) return;
@@ -47,13 +43,11 @@ export default function DayOfBanner({ events = config.events, now, opened = true
       if (e.key === 'Escape') close();
     };
     window.addEventListener('keydown', onKey);
-    return () => window.removeEventListener('keydown', onKey);
-  }, [opened, dismissed]);
-
-  useEffect(() => {
-    if (!opened || dismissed) return;
-    const id = setTimeout(close, AUTO_CLOSE_MS);
-    return () => clearTimeout(id);
+    const timer = setTimeout(close, AUTO_CLOSE_MS);
+    return () => {
+      window.removeEventListener('keydown', onKey);
+      clearTimeout(timer);
+    };
   }, [opened, dismissed]);
 
   if (!opened || dismissed) return null;

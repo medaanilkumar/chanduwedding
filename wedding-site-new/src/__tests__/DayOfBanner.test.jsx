@@ -10,7 +10,6 @@ const events = [
 describe('DayOfBanner popup', () => {
   beforeEach(() => {
     cleanup();
-    sessionStorage.clear();
   });
 
   it('shows the live event and update note during the event window', () => {
@@ -41,15 +40,21 @@ describe('DayOfBanner popup', () => {
     expect(screen.queryByRole('dialog')).toBeNull();
   });
 
-  it('closes when the Close button is clicked and stays closed for the session', () => {
+  it('closes when the Close button is clicked', () => {
+    const now = new Date('2026-11-25T09:00:00+05:30').getTime();
+    render(<DayOfBanner events={events} now={now} opened />);
+    fireEvent.click(screen.getByRole('button', { name: 'Close' }));
+    expect(screen.queryByRole('dialog')).toBeNull();
+  });
+
+  it('shows again on a fresh page load after being closed', () => {
     const now = new Date('2026-11-25T09:00:00+05:30').getTime();
     const { unmount } = render(<DayOfBanner events={events} now={now} opened />);
     fireEvent.click(screen.getByRole('button', { name: 'Close' }));
-    expect(screen.queryByRole('dialog')).toBeNull();
     unmount();
 
     render(<DayOfBanner events={events} now={now} opened />);
-    expect(screen.queryByRole('dialog')).toBeNull();
+    expect(screen.getByRole('dialog')).toBeDefined();
   });
 
   it('closes automatically after 15 seconds', () => {
@@ -65,7 +70,6 @@ describe('DayOfBanner popup', () => {
       vi.advanceTimersByTime(1000);
     });
     expect(screen.queryByRole('dialog')).toBeNull();
-    expect(sessionStorage.getItem('dayOfPopupSeen')).toBe('1');
     vi.useRealTimers();
   });
 
